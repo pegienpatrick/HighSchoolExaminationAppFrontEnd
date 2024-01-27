@@ -102,14 +102,21 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
     <VerticalNavLink
       :item="{
         title: 'Create Examination',
-        to: '/Users',
+        to: '/createExam',
         icon: 'ri-pencil-line',
+      }"
+    />
+     <VerticalNavLink
+      :item="{
+        title: 'view Examinations',
+        to: '/viewExaminations',
+        icon: 'ri-book-line',
       }"
     />
     <VerticalNavLink
       :item="{
-        title: 'Subjects',
-        to: '/Users',
+        title: 'Subjects Grading',
+        to: '/gradings',
         icon: 'ri-book-2-line',
       }"
     />

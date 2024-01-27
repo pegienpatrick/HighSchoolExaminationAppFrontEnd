@@ -30,6 +30,23 @@ export const routes = [
         component: () => import('@/pages/pexam/searchStudent.vue'),
       },
       {
+        path: 'createExam',
+        component: () => import('@/pages/pexam/createExam.vue'),
+      },
+      {
+        path: 'viewExam',
+        component: () => import('@/pages/pexam/viewExam.vue'),
+      },
+      {
+        path: 'viewExaminations',
+        component: () => import('@/pages/pexam/viewExaminations.vue'),
+      },
+      {
+        path : 'marksSheet',
+        component: () => import('@/pages/pexam/marksSheet.vue'),
+      }
+      ,
+      {
         path: 'account-settings',
         component: () => import('@/pages/account-settings.vue'),
       },
