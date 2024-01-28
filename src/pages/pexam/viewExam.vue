@@ -72,11 +72,13 @@
             <VCol>
               <VBtn
               text="View Merit List"
+              :to="`/viewMeritList?exam=${examinationId}&stage=${f}`"
               />
             </VCol>
 
             <VCol>
               <VBtn
+              :to="`/generateMeritList?exam=${examinationId}&stage=${f}`"
               text="Generate Merit List"
               />
             </VCol>

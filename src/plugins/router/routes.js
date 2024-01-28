@@ -64,6 +64,15 @@ export const routes = [
       }
       ,
       {
+        path : 'generateMeritList',
+        component: () => import('@/pages/pexam/generateMeritList.vue'),
+      },
+      {
+        path : 'viewMeritList',
+        component: () => import('@/pages/pexam/viewMeritList.vue'),
+      }
+      ,
+      {
         path: 'account-settings',
         component: () => import('@/pages/account-settings.vue'),
       },
