@@ -6,7 +6,7 @@
     <VCol >
       <VCard>
         <VCardTitle>
-          Exarm Information
+          Exam Reports
         </VCardTitle>
         <VCardText>
 
@@ -36,13 +36,20 @@
                 <p><strong>Created On : </strong></p>{{ form.date }}
               </VCol>
 
+              <VCol md="6" cols="12">
+                <p><strong>Form : </strong></p>{{ stage }}
+              </VCol>
+
 
             </VRow>
             <VRow>
               <VCol>
+
            
           </VCol>
           </VRow>
+
+          
         
           </VForm>
 
@@ -55,51 +62,83 @@
   </VRow>
 
 
-  <VRow v-for="f in classes" :key="f">
+  <VRow>
     <VCol>
+
       <VCard>
         <VCardTitle>
-          <p><strong>Form {{ f }}</strong></p>
+          Student Reports
         </VCardTitle>
         <VCardText>
           <VRow>
             <VCol>
-              <VBtn
-              :to="`/marksSheet?exam=${examinationId}&stage=${f}`"
-              text="Marks Entry"
-              />
+              <VTextField
+              label="Enter Student Admission Number"
+              v-model="stream.selectedAdm"
+              >
+
+              </VTextField>
+              
             </VCol>
             <VCol>
               <VBtn
-              text="View Merit List"
-              :to="`/viewMeritList?exam=${examinationId}&stage=${f}`"
-              />
-            </VCol>
+              text="Open Student Report"
+              @click="openStudentReport"
+              >
 
-            <VCol>
-              <VBtn
-              :to="`/generateMeritList?exam=${examinationId}&stage=${f}`"
-              text="Generate Merit List"
-              />
+              </VBtn>
             </VCol>
-
-            <VCol>
-              <VBtn
-              text="Reports"
-              :to="`/viewExamReports?examinationId=${examinationId}&stage=${f}`"
-              />
-            </VCol>
-
           </VRow>
-          
           
         </VCardText>
 
       </VCard>
-      
     </VCol>
 
   </VRow>
+
+
+
+
+  <VRow>
+    <VCol>
+
+      <VCard>
+        <VCardTitle>
+          Bulk  Reports
+        </VCardTitle>
+        <VCardText>
+          <v-row>
+     
+     <v-col>
+       <v-select
+         label="Select Stream "
+         :items="['All','A','B','C']"
+         v-model="stream.selectedStream"
+       ></v-select>
+     </v-col>
+     <v-col>
+       <VBtn
+       text="Fetch Students Reports"
+       @click="bulkReports()"
+       >
+ 
+       </VBtn>
+     </v-col>
+   </v-row>
+          
+        </VCardText>
+
+      </VCard>
+    </VCol>
+
+  </VRow>
+
+  
+  
+
+
+  
 
 
 
@@ -121,6 +160,7 @@ let apiUrl = window.location.protocol + "//" + window.location.hostname + ":8080
 
      
 let examinationId=router.currentRoute.value.query.examinationId;
+let stage=router.currentRoute.value.query.stage;
 
 
 const form=ref({
@@ -128,6 +168,12 @@ const form=ref({
   "year": 2024,
   "term": '',
   "title": ""
+
+})
+
+const stream=ref({
+  selectedStream:'All',
+  selectedAdm:''
 
 })
 
@@ -145,6 +191,13 @@ axios.get(apiUrl + `/api/v1/examination/viewExamination/${examinationId}`, {
 
 
             });
+
+
+
+
+            const openStudentReport=()=>{
+              router.push(`/studentReportCard?examinationId=${examinationId}&admNo=${stream.value.selectedAdm}`)
+            }
 
 
 

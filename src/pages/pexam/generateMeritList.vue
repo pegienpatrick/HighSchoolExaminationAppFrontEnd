@@ -132,7 +132,82 @@ for(const key in items)
 
 return aller;
 
+
+
+
+
 }
+
+const stream=ref({
+  selectedStream:'All'
+
+})
+
+
+const updateList=()=>{
+  students.value.data=[]
+
+  if(stream.value.selectedStream=='All'){
+    students.value.data=all;
+    return;
+  }
+
+  if(stream.value.selectedStream=='A'){
+    if(streamA.length>0){
+      students.value.data=streamA;
+      return;
+    }
+  }
+
+  if(stream.value.selectedStream=='B'){
+    if(streamB.length>0){
+      students.value.data=streamB;
+      return;
+    }
+  }
+
+  if(stream.value.selectedStream=='C'){
+    if(streamC.length>0){
+      students.value.data=streamC;
+      return;
+    }
+  }
+
+  axios.get(apiUrl+`/api/v1/meritList/viewMerit/${examinationId}/${stage}?stream=${stream.value.selectedStream}`,{
+          headers:{
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get("Authorization")
+          },
+
+        })
+        .then((response) => {
+
+          students.value.data=response.data;
+
+          if(stream.value.selectedStream=='A'){
+            streamA=response.data;
+          }
+
+          if(stream.value.selectedStream=='B'){
+            streamB=response.data;
+          }
+
+          if(stream.value.selectedStream=='C'){
+            streamC=response.data;
+          }
+
+
+        });
+
+
+
+
+}
+
+  
+  
+
+
 
 
 
@@ -149,11 +224,13 @@ return aller;
       <v-select
         label="Select Stream "
         :items="['All','A','B','C']"
+        v-model="stream.selectedStream"
       ></v-select>
     </v-col>
     <v-col>
       <VBtn
       text="Fetch Stream MeritList"
+      @click="updateList"
       >
 
       </VBtn>

@@ -70,8 +70,16 @@ export const routes = [
       {
         path : 'viewMeritList',
         component: () => import('@/pages/pexam/viewMeritList.vue'),
-      }
-      ,
+      },
+      {
+        path : 'viewExamReports',
+        component: () => import('@/pages/pexam/examReports.vue'),
+      },
+      {
+        path : 'studentReportCard',
+        component: () => import('@/pages/pexam/studentReportCard.vue'),
+      },
+      
       {
         path: 'account-settings',
         component: () => import('@/pages/account-settings.vue'),
