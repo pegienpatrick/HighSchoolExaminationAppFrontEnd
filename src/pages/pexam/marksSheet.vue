@@ -62,8 +62,67 @@
     <VCol>
       <VCard>
         <VCardTitle>
+          <VRow>
+            <VCol>
+
+            
           <p><strong>Marks</strong></p>
+        </VCol>
+        <VCol>
+          <VRow>
+          {{ pendingUpdate.data.length }} Unsaved Changes
+          </VRow>
+          <VRow>
+          <VBtn
+          text="Save Changes"
+          @click="retryUpdating"
+          ></VBtn>
+        </VRow>
+        </VCol>
+
+        <VCol>
+          <v-btn color="success" @click='showForm'>viewable Columns</v-btn>
+        </VCol>
+
+
+        </VRow>
         </VCardTitle>
+
+
+      <v-dialog v-model="selectedH.showForm" max-width="600">
+        <v-card>
+          <v-card-title>
+            Form
+            <v-spacer></v-spacer>
+            <v-btn icon @click="closeDialog">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-card-title>
+
+          <v-card-text>
+            <v-form>
+              <VRow  v-for="h in headers.data" :key="h.value">
+                <span >
+
+              <v-checkbox :label="h.title"   :v-text="h.title" v-model="h.showable">
+                
+              </v-checkbox>
+                  
+            </span>
+              </VRow>
+
+             
+              
+            </v-form>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn @click="submitForm">Submit</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+
         <VCardText>
 
         <v-col>
@@ -84,6 +143,7 @@
               <td v-for="c in combiner(item)" :key="c.key" align="center"
               :width="160"
               dense
+              style="inline-size:2rem"
               >
                 <!-- Display a simple value -->
                 <span v-if="c.type === 1">{{ c.value }}</span>
@@ -95,6 +155,13 @@
                   :placeholder="subjectMap.get(c.value.subjectCode).subjectRep"
                   class="w-100 inputMarks"
                   :label="subjectMap.get(c.value.subjectCode).subjectRep"
+                  @change="updateMarks(c.value)"
+                  
+
+                  @keydown.up.prevent="handleArrowKey(item.admNo, c.key, 'up')"
+                  @keydown.down.prevent="handleArrowKey(item.admNo, c.key, 'down')"
+                  :data-index="item.admNo"
+                  :data-column="c.key"
                   
                 />
               </td>
@@ -138,12 +205,24 @@ let examinationId=router.currentRoute.value.query.exam;
 let stage=router.currentRoute.value.query.stage;
 
 
+
+
+const selectedH=ref({
+  data:[],
+  showForm:false
+})
+
+
 const form=ref({
   
   "year": 2024,
   "term": '',
   "title": ""
 
+})
+
+const pendingUpdate=ref({
+  data:[]
 })
 
 const formInfo=ref({
@@ -207,13 +286,13 @@ let classes=['1','2','3','4'];
               var tmp=Object.keys(response.data[0])
               console.log(tmp)
               for(var i=0;i<tmp.length-1;i++)
-                headers.value.data.push({title: tmp[i],value : tmp[i],align: 'center' })
+                headers.value.data.push({title: tmp[i],value : tmp[i],align: 'center',showable: true })
               //   headers.push(tmp[i])
 
               var tmp=Object.keys(response.data[0].marks)
 
               for(var i=0;i<tmp.length;i++)
-                headers.value.data.push({title: subjectMap.get(parseInt(tmp[i])).subjectName,value : tmp[i] })
+                headers.value.data.push({title: subjectMap.get(parseInt(tmp[i])).subjectName+'('+tmp[i]+')',value : tmp[i],showable: true })
                
               // headers
               // response.data[0].marks[101].marks='89'
@@ -221,6 +300,7 @@ let classes=['1','2','3','4'];
               console.log(headers.value.data)
               formInfo.value.data=response.data;
               formInfo.value.filtered=response.data;
+              selectedH.value.data=headers;
               
             });
 
@@ -258,8 +338,90 @@ let classes=['1','2','3','4'];
 
             // 
 
+
+            const  updateMarks=(marks)=>{
+              // console.log(marks)
+              // const ind=pendingUpdate.data;
+              // pendingUpdate.value.data.push(marks);
+              
+              axios.put(apiUrl + `/api/v1/marks/updateMarks`,marks, {
+                  headers: {
+                      Authorization: Cookies.get("Authorization")
+                  },
+              })
+                  .then((response) => {
+                    console.log(response);
+                    // pendingUpdate.value.data.splice(ind,1);
+                  }).catch((error)=>{
+                    console.log(error);
+                    pendingUpdate.value.data.push(marks);
+                    
+                  })
+            }
+
+            const retryUpdating = async () => {
+                  var toRemove = [];
+
+                  for (var i = 0; i < pendingUpdate.value.data.length; i++) {
+                      const mark = pendingUpdate.value.data[i];
+
+                      try {
+                          const response = await axios.put(apiUrl + `/api/v1/marks/updateMarks`, mark, {
+                              headers: {
+                                  Authorization: Cookies.get("Authorization")
+                              },
+                          });
+
+                          if (response.status === 200 || response.ok) {
+                              toRemove.push(i);
+                          }
+                      } catch (error) {
+                          console.error(error);
+                      }
+                  }
+
+                  // Using reverse order to avoid index shifting when removing elements
+                  toRemove.reverse().forEach(index => {
+                      pendingUpdate.value.data.splice(index, 1);
+                  });
+              };
+
+
            
 
+     
+
+        const handleArrowKey=(rowIndex, columnName, direction) => {
+          moveFocus(rowIndex, columnName, direction);
+        }
+
+        const moveFocus=(rowIndex, columnName, direction) => {
+          const nextRowIndex = direction === 'up' ? rowIndex - 1 : rowIndex + 1;
+          if (nextRowIndex >= 0 && nextRowIndex < formInfo.value.filtered.length) {
+            const nextInputSelector = `input[data-index="${nextRowIndex}"][data-column="${columnName}"]`;
+            const nextInput = document.querySelector(nextInputSelector);
+            if (nextInput) {
+              nextInput.focus();
+            }
+          }
+        }
+
+
+
+        const showForm=()=>{
+          selectedH.value.showForm=true;
+        }
+
+        const closeDialog=()=>{
+          selectedH.value.showForm=false;
+        }
+
+
+
+        const isShowable=(item)=>{
+          console.log(key+" showable ");
+          return true;
+        }
           
 
          

@@ -125,7 +125,14 @@
         <v-col>
           <v-btn @click="editStudent" color="primary">Edit Student</v-btn>
         </v-col>
-      </v-row>
+
+        <v-col>
+          
+        </v-col>
+        <v-col>
+          <v-btn @click="deleteStudent" color="warning">Delete Student</v-btn>
+        </v-col>
+</v-row>
 
 
 </v-card-text>
@@ -146,6 +153,8 @@
 <script>
 import axios from 'axios';
 import Cookies from 'vue-cookies';
+
+import Swal from 'sweetalert2';
 
 export default {
   data() {
@@ -206,6 +215,38 @@ export default {
       // Redirect to the edit page, you need to define your edit route
       this.$router.push(`/editStudent?admNo=${this.studentDetails.admNo}`);
     },
+    deleteStudent()
+    {
+      Swal.fire({
+        title: 'Delete Student',
+        text: 'Are you sure you want to delete this student?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+
+        if(result.isConfirmed)
+        {
+        const apiUrl = window.location.protocol + "//" + window.location.hostname + ":8080";
+
+        axios.get(apiUrl + `/api/v1/student/deleteStudent/${this.admNo}`, {
+            headers: {
+                Authorization: Cookies.get("Authorization")
+            },
+        })
+            .then((response) => {
+              console.log(response)
+
+              this.$router.push("/students");
+
+            });
+      }
+      
+      })
+
+    }
   },
 };
 </script>

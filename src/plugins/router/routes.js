@@ -44,6 +44,23 @@ export const routes = [
       {
         path : 'marksSheet',
         component: () => import('@/pages/pexam/marksSheet.vue'),
+      },
+      {
+        path : 'studentsubjects',
+        component: () => import('@/pages/pexam/studentsubjects.vue'),
+      }
+      ,
+      {
+        path : 'importStudents',
+        component: () => import('@/pages/pexam/importStudents.vue'),
+      },
+      {
+        path : 'systemLogs',
+        component: () => import('@/pages/pexam/systemLogs.vue'),
+      },
+      {
+        path : 'subjectsGrading',
+        component: () => import('@/pages/pexam/subjectsGradings.vue'),
       }
       ,
       {

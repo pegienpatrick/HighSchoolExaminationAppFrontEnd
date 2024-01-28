@@ -36,7 +36,7 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
     <VerticalNavLink
       :item="{
         title: 'System Logs',
-        to: '/Users',
+        to: '/systemLogs',
         icon: 'ri-file-list-2-line',
       }"
     />
@@ -48,6 +48,17 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
         icon: 'ri-settings-5-line',
       }"
     />
+
+
+    <VerticalNavLink
+      :item="{
+        title: 'Import Students',
+        to: '/importStudents',
+        icon: 'ri-file-list-2-line',
+      }"
+    />
+
+
   </VerticalNavGroup>
 
   <!-- Students -->
@@ -116,17 +127,11 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
     <VerticalNavLink
       :item="{
         title: 'Subjects Grading',
-        to: '/gradings',
+        to: '/subjectsGrading',
         icon: 'ri-book-2-line',
       }"
     />
-    <VerticalNavLink
-      :item="{
-        title: 'Marks Entry',
-        to: '/Users',
-        icon: 'ri-number-2-line',
-      }"
-    />
+   
     <VerticalNavLink
       :item="{
         title: 'Results',
@@ -177,6 +182,36 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
         title: 'SMS Balance',
         to: '/Users',
         icon: 'ri-money-dollar-box-line',
+      }"
+    />
+  </VerticalNavGroup>
+
+  <!-- User Profile -->
+  <VerticalNavGroup
+    :item="{
+      title: 'TimeTables',
+      icon: 'ri-time-line',
+    }"
+  >
+    <VerticalNavLink
+      :item="{
+        title: 'Exams TimeTables',
+        to: '/Users',
+        icon: 'ri-pencil-line',
+      }"
+    />
+    <VerticalNavLink
+      :item="{
+        title: 'Class Timetables',
+        to: '/Users',
+        icon: 'ri-book-line',
+      }"
+    />
+    <VerticalNavLink
+      :item="{
+        title: 'Subject Teachers',
+        to: '/Users',
+        icon: 'ri-ruler-line',
       }"
     />
   </VerticalNavGroup>
