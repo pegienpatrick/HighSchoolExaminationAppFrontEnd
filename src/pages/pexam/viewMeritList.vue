@@ -66,12 +66,12 @@ axios.get(apiUrl+`/api/v1/meritList/viewMerit/${examinationId}/${stage}`,{
     students.value.data=studentsData;
 
     students.value.headers=[ 
-{title:'Overall Pos',value: 'classRank'},
-{title:'Stream',value: 'stream'}
+{title:'Overall Pos',value: 'classRank',key: 'classRank'},
+{title:'Stream',value: 'stream',key: 'stream'}
 ,
-{title:'Stream Pos',value: 'streamRank'},
-{title:'Adm No',value: 'admNo'},
-{title:'Student Name',value: 'studentName'}
+{title:'Stream Pos',value: 'streamRank',key:'streamRank'},
+{title:'Adm No',value: 'admNo',key:'admNo'},
+{title:'Student Name',value: 'studentName',key:'studentName'}
     ];
 
     // for(const key in subjectMap)
@@ -79,14 +79,14 @@ axios.get(apiUrl+`/api/v1/meritList/viewMerit/${examinationId}/${stage}`,{
     //   students.value.headers.push({title: subjectMap.get(key).subjectRep,value: 'subjectMarks' })
     // }
     subjectMap.forEach((value, key) => {
-      students.value.headers.push({title: subjectMap.get(key).subjectRep , value: 'subjectMarks.'+key })
-      students.value.headers.push({title: 'G' , value: 'subjectGrades.'+key })
+      students.value.headers.push({title: subjectMap.get(key).subjectRep , value: 'subjectMarks.'+key,key: 'subjectMarks.'+key})
+      students.value.headers.push({title: 'G' , value: 'subjectGrades.'+key ,key:'subjectGrades.'+key})
 
     });
 
-    students.value.headers.push({title : 'Aggr Points',value : 'points' })
-    students.value.headers.push({title : 'Aggr Grade',value : 'aggregateGrade' })
-    students.value.headers.push({title : 'Entry Marks',value : 'kcpeMarks' })
+    students.value.headers.push({title : 'Aggr Points',value : 'points',key:'points' })
+    students.value.headers.push({title : 'Aggr Grade',value : 'aggregateGrade',key:'aggregateGrade' })
+    students.value.headers.push({title : 'Entry Marks',value : 'kcpeMarks',key:'kcpeMarks' })
 
 
   
