@@ -201,5 +201,11 @@ axios.get(apiUrl + `/api/v1/examination/viewExamination/${examinationId}`, {
 
 
 
+            const bulkReports=()=>{
+              router.push(`/studentReportCards?examinationId=${examinationId}&stage=${stage}&stream=${stream.value.selectedStream}`)
+            }
+
+
+
 
 </script>

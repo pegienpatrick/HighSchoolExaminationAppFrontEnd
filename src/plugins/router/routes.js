@@ -79,6 +79,10 @@ export const routes = [
         path : 'studentReportCard',
         component: () => import('@/pages/pexam/studentReportCard.vue'),
       },
+      {
+        path : 'studentReportCards',
+        component: () => import('@/pages/pexam/studentReportCards.vue'),
+      },
       
       {
         path: 'account-settings',

@@ -4,71 +4,23 @@
       <v-row>
         <v-col cols="12">
           <v-card elevation="3">
-            <v-card-title class="text-h6 font-weight-bold">Student Report Card</v-card-title>
+            <v-card-title class="text-h6 font-weight-bold">Student Report Cards</v-card-title>
             <v-card-text>
               <VCol cols="12">
-  <VCard title="Student Details">
+  <VCard title="Reports Cards">
     <VCardText class="d-flex">
 
-      <div v-if="studentDetails==null">
-      <!-- display error -->
-      <VRow class="w-100 d-block">
-        <VCol>
-
-          <VCol>
-          <p><strong>Admission Number:</strong> {{ this.admNo }}</p>
-        </VCol>
-          
-        </VCol>
-      </VRow>
-      <VRow class="w-100 d-block">
-        <VCol>
-          <VAlert>
-            Record Not Found
-          </VAlert>
-        </VCol>
-      </VRow>
-
-      <VRow>
-        <VCol>
-
-          <VBtn
-          to="/searchStudent"
-          >
-            <VIcon
-            icon="ri-restart-line"
-            />
-
-            Search Again
-
-          </VBtn>
-
-        </VCol>
-      </VRow>
-    </div>
-
-
-
+    
       <!-- 👉 Display Data -->
-      <VRow v-if="studentDetails!=null">
+      <VRow >
         <!-- 👉 Admission Number -->
         <VCol md="6" cols="12">
-          <p><strong>Admission Number:</strong> {{ studentDetails.admNo }}</p>
+          <p><strong>Form :</strong> {{ stage.data }}</p>
         </VCol>
 
         <!-- 👉 Surname -->
         <VCol md="6" cols="12">
-          <p><strong>Surname:</strong> {{ studentDetails.surname }}</p>
-        </VCol>
-
-        <!-- 👉 First Name -->
-        <VCol md="6" cols="12">
-          <p><strong>First Name:</strong> {{ studentDetails.firstName }}</p>
-        </VCol>
-
-        <!-- 👉 Other Name -->
-        <VCol md="6" cols="12">
-          <p><strong>Other Name:</strong> {{ studentDetails.otherName }}</p>
+          <p><strong>Stream : </strong> {{ stage.stream }}</p>
         </VCol>
 
   
@@ -151,41 +103,24 @@ export default {
       data:'google.com',
       title:''
     });
+    const stage=ref({
+      data:'',
+      stream: ''
+    })
+    
     const pdfData=ref(null);
 
     const router = useRouter();
 
-    // Fetch student details
-    const fetchStudentDetails = () => {
-      const apiUrl = window.location.protocol + '//' + window.location.hostname + ':8080';
-      admNo.value = router.currentRoute.value.query.admNo;
-      examinationId.value = router.currentRoute.value.query.examinationId;
-
-      axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo.value}`, {
-        headers: {
-          Authorization: Cookies.get('Authorization'),
-        },
-      })
-      .then((response) => {
-        studentDetails.value = response.data.body;
-        const originalDate = new Date(studentDetails.value.dateOfBirth);
-        const day = String(originalDate.getDate()).padStart(2, '0');
-        const month = String(originalDate.getMonth() + 1).padStart(2, '0');
-        const year = originalDate.getFullYear();
-        studentDetails.value.dateOfBirth = `${day}-${month}-${year}`;
-      })
-      .catch((error) => {
-        console.error('Error fetching student details:', error);
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-          window.open('/login', '_blank');
-        }
-      });
-    };
+    
 
     // Load PDF
     const loadPdf = () => {
+      stage.value.data=router.currentRoute.value.query.stage;
+      stage.value.stream=router.currentRoute.value.query.stream;
+      examinationId.value=router.currentRoute.value.query.examinationId;
       const apiUrl = window.location.protocol + '//' + window.location.hostname + ':8080';
-      const serverUrl = apiUrl + `/api/v1/reportCard/viewReportCard/${examinationId.value}/${admNo.value}`;
+      const serverUrl = apiUrl + `/api/v1/reportCard/bulkReportCards/${examinationId.value}/${stage.value.data}?stream=${stage.value.stream}`;
       
       axios.get(serverUrl, {
         responseType: 'blob',
@@ -200,7 +135,7 @@ export default {
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         
-        link.download = studentDetails.value.admNo+studentDetails.value.name+examinationId+" Report Card.pdf"
+        link.download =stage.value.data+stage.value.stream+examinationId.value+" Report Card.pdf"
         document.body.appendChild(link);
         // link.click();
         document.body.removeChild(link);
@@ -218,7 +153,7 @@ export default {
 
     // Lifecycle hook equivalent to mounted
     onMounted(() => {
-      fetchStudentDetails();
+      
       loadPdf();
     });
 
@@ -228,8 +163,9 @@ export default {
       admNo,
       examinationId,
       pdfUrl,
-      fetchStudentDetails,
+     
       loadPdf,
+      stage
     };
   },
 };
