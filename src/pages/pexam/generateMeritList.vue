@@ -204,6 +204,36 @@ const updateList=()=>{
 
 }
 
+
+
+const downloadMerit=()=>{
+
+axios.get(apiUrl+`/api/v1/meritList/printMerit/${examinationId}/${stage}?stream=${stream.value.selectedStream}`, {
+      responseType: 'blob',
+      headers: {
+        Authorization: Cookies.get('Authorization'),
+      },
+    })
+    .then(response => {
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      
+
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      
+      link.download =stage+stream.value.selectedStream+examinationId+" MeritList.pdf"
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // document.getElementById("datapoint").src=link.href;
+      // // document.getElementById("datapoint").title=link.download;
+      // pdfUrl.value.data=link.href;
+      // pdfUrl.value.title=link.download;
+
+    })
+}
+
   
   
 
@@ -235,6 +265,13 @@ const updateList=()=>{
 
       </VBtn>
     </v-col>
+
+    <VBtn
+text="Download"
+@click="downloadMerit"
+>
+
+</VBtn>
   </v-row>
  <v-row>
     <!-- Custom search input -->
