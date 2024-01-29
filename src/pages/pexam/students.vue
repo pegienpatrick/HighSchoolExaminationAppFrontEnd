@@ -106,6 +106,11 @@ const matchesSearch=(item)=> {
     router.push(`/viewStudent?admNo=${item.admNo}`)
   }
 
+const selectedStream=ref({
+  stage:'All',
+  stream:'All'
+})
+
 
 
 </script>
@@ -119,12 +124,14 @@ const matchesSearch=(item)=> {
       <v-select
         label="Select Stage (Form)"
         :items="['All','1','2','3','4','Alumini']"
+        v-model="selectedStream.stage"
       ></v-select>
     </v-col>
     <v-col>
       <v-select
         label="Select Stream "
         :items="['All','A','B','C']"
+        v-model="selectedStream.stream"
       ></v-select>
     </v-col>
   </v-row>
@@ -142,6 +149,7 @@ const matchesSearch=(item)=> {
    class="elevation-1 custom-table" 
    striped
    :search="students.search"
+   :items-per-page="selectedStream.stage=='All'?10:students.data.length"
    >
       <!-- <template v-slot:header="{ props }">
         <tr>
@@ -154,7 +162,7 @@ const matchesSearch=(item)=> {
       </template> -->
       <template v-slot:item="{ item }" >
         <!-- Add a button to each row for viewing the student -->
-        <tr >
+        <tr v-if="(selectedStream.stage=='All'||selectedStream.stage==item.stage)&&(selectedStream.stream=='All'||selectedStream.stream==item.stream)">
           <td v-for="h in students.headers" :key="h.value">
             {{ item[h] }}
             <!-- {{ value }} -->

@@ -65,14 +65,65 @@
         <VCardTitle>
           <VRow>
             <VCol>
-              <VBtn
-              text="Edit Marks"
-              :to="`/editMarksSheet?exam=${examinationId}&stage=${stage}`"
-              ></VBtn>
 
-          </VCol>
+            
+          <p><strong>Marks</strong></p>
+        </VCol>
+        <VCol>
+          <VRow>
+          {{ pendingUpdate.data.length }} Unsaved Changes
           </VRow>
-          </VCardTitle>
+          <VRow>
+          <VBtn
+          text="Save Changes"
+          @click="retryUpdating"
+          ></VBtn>
+        </VRow>
+        </VCol>
+
+        <VCol>
+          <v-btn color="success" @click='showForm'>viewable Columns</v-btn>
+        </VCol>
+
+
+        </VRow>
+        </VCardTitle>
+
+
+      <v-dialog v-model="selectedH.showForm" max-width="600">
+        <v-card>
+          <v-card-title>
+            Form
+            <v-spacer></v-spacer>
+            <v-btn icon @click="closeDialog">
+              <v-icon>ri-close-line</v-icon>
+            </v-btn>
+          </v-card-title>
+
+          <v-card-text>
+            <v-form>
+              <VRow  v-for="h in headers.data" :key="h.value">
+                <span >
+
+              <v-checkbox :label="h.title"   :v-text="h.title" v-model="h.show">
+                
+              </v-checkbox>
+                  
+            </span>
+              </VRow>
+
+             
+              
+            </v-form>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn @click="submitForm" >Submit</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+
         <VCardText>
 
         <v-col>
@@ -85,8 +136,30 @@
           class="elevation-1"
           striped
           :items-per-page="selectedStream.data=='All'?10:formInfo.filtered.length"
-          :headers="headers.data"
+          :headers="headers.visible"
           >
+
+          <template v-slot:item="{ item }">
+            <tr :key="item.admNo" v-if="selectedStream.data=='All'||selectedStream.data==item.stream">
+              <td v-for="c in headers.visible" :key="c.key" align="center"
+              :width="160"
+              dense
+              style="inline-size:2rem"
+              >
+                <!-- Display a simple value -->
+                <span v-if="c.type == 1">{{ item[c.key] }}</span>
+
+                <!-- Display a VTextField for editing marks -->
+                <VTextField
+                  v-if="c.type == 2"
+                  v-model="item.marks[c.value].marks"
+                  :label="subjectMap.get(item.marks[c.value].subjectCode).subjectRep+'('+item.admNo+')'"
+                  @change="updateMarks(item.marks[c.value])"
+              
+                />
+              </td>
+            </tr>
+          </template>
 
           
           
@@ -178,7 +251,8 @@ let classes=['1','2','3','4'];
         ]
         
         const headers=ref({
-          data:[]
+          data:[],
+          visible:[]
         })
 
         let availableSubjects=[]
@@ -222,16 +296,17 @@ let classes=['1','2','3','4'];
              
 
               for(var i=0;i<tmp.length;i++)
-                headers.value.data.push({title: subjectMap.get(parseInt(tmp[i])).subjectName+'('+tmp[i]+')',value : 'marks.'+tmp[i]+'.marks',show: false,type:2,key : 'marks.'+tmp[i]+'.marks',sortable: true })
-               
+                headers.value.data.push({title: subjectMap.get(parseInt(tmp[i])).subjectName+'('+tmp[i]+')',value : tmp[i],show: false,type:2,key : 'marks.'+tmp[i]+'.marks' })
                
               // headers
               // response.data[0].marks[101].marks='89'
 
+              
               console.log(headers.value.data)
               formInfo.value.data=response.data;
               formInfo.value.filtered=response.data;
               selectedH.value.data=headers;
+              updateVisible();
               
             });
 
@@ -352,6 +427,25 @@ let classes=['1','2','3','4'];
         const isShowable=(item)=>{
           console.log(key+" showable ");
           return true;
+        }
+
+
+        const updateVisible=()=>
+        {
+          headers.value.visible=[];
+          for(const i in headers.value.data)
+          {
+            //console.log(i)
+            if(headers.value.data[i].show)
+              headers.value.visible.push(headers.value.data[i])
+          }
+          console.log(headers.value.visible)
+        }
+
+
+        const submitForm=()=>{
+          closeDialog();
+          updateVisible();
         }
           
 

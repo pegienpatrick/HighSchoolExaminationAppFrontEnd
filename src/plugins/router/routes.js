@@ -46,6 +46,10 @@ export const routes = [
         component: () => import('@/pages/pexam/marksSheet.vue'),
       },
       {
+        path : 'editMarksSheet',
+        component: () => import('@/pages/pexam/editMarksSheet.vue'),
+      },
+      {
         path : 'studentsubjects',
         component: () => import('@/pages/pexam/studentsubjects.vue'),
       }
