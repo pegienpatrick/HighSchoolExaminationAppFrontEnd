@@ -20,7 +20,9 @@
 label="Form (stage)"
 placeholder=""
 :items="['All','1','2','3','4']"
-value="All"
+v-model="selector.grade"
+@click:append="updateGrade"
+
 />
 
 </VCol>
@@ -30,7 +32,8 @@ value="All"
                 label="Stream"
                 placeholder="Select Stream"
                 :items="['All','A','B','C']"
-                value="All"
+                v-model="selector.stream"
+                @change="updateGrade"
                 />
            
           </VCol>
@@ -64,8 +67,10 @@ value="All"
           :search="formInfo.search"
           class="elevation-1 w-100 d-block"
           striped
-          :items-per-page="50"
+          :items-per-page="20"
           :headers="headers.data"
+         
+         
 
           >
 
@@ -73,40 +78,45 @@ value="All"
             <tr :key="item.admNo"
             
             >
-              <td v-for="c in combiner(item)" :key="c.key" align="center"
+              <td v-for="c in headers.data" :key="c.key" align="center"
+              >
               
              
-              
-              >
                 <!-- Display a simple value -->
-                <span v-if="c.type == 1">{{ c.value }}</span>
-
+                <span v-if="c.type == 1">{{ item[c.key] }}</span>
                 <!-- Display a VTextField for editing marks -->
                 <VSelect
-                  v-if="c.key == 'hasSelected'"
-                  v-model="['All','Selection'][c.value==false?0:1]"
-                  :placeholder="c.key"
+                  v-if="c.type == 2&&c.title=='Subjects'&& c.title!='Action'"
+                  v-model="item.subjectSelection[c.value]"
+                  :label="item.admNo+'('+c.title"
                   class="w-100 inputMarks"
-                  :items="['All','Selection']"
-                  @change="c.value=selectedIndex(this)"
+                  :items="[{title:'All',value:false},{title:'Selection',value:true}]"
                 />
 
                 <VSelect
-                  v-if="c.type == 2&&c.key != 'hasSelected'"
-                  v-model="readArray(form.optionalsReadable,c.key)[c.value]"
-                  class="w-100 inputMarks"
-                  :label="c.key"
-                  :items="readArray(form.optionalsReadable,c.key)"
+                  v-if="c.type == 2 && c.title!='Subjects' && c.title!='Action'"
+                  v-model="item.subjectSelection[c.value]"
+                  class="w-100"
+                  :label="item.admNo+'('+c.title"
+                  :items="form.optionalsReadable.get(c.value)"
                 />
-              </td>
-              <td>
+
                 <VBtn
-                  text="Update"
+                
+                  v-if="c.title=='Action'"
+                  :color="item.success!=null?'success':'primary'"
+                  :text="item.success!=null?'Updated':'Update'"
                   @click.prevent="updateSelection(item)"
                 ></VBtn>
+
+
+
               </td>
+              
             </tr>
           </template>
+
+          
 
           
           
@@ -181,8 +191,10 @@ let classes=['1','2','3','4'];
               form.value.optionals=response.data;
               for(const s in form.value.optionals){
                 var ar2=[]
+                ar2.push({title:'None',value:-1})
                 for(const s2 in form.value.optionals[s])
-                  ar2.push(form.value.optionals[s][s2].subjectName)
+                  ar2.push({title:form.value.optionals[s][s2].subjectName,value:parseInt(form.value.optionals[s][s2].subjectCode)})
+                
 
                 console.log(s)
                 form.value.optionalsReadable.set(s,ar2)
@@ -233,19 +245,19 @@ let classes=['1','2','3','4'];
 
               tmp=Object.keys(selections.value.data[0])
               for(var i=0;i<tmp.length-1;i++)
-                headers.value.data.push({title: tmp[i],value : tmp[i],align: 'center' })
+                headers.value.data.push({title: tmp[i],value : tmp[i],align: 'center',key: tmp[i],type:1 })
               //   headers.push(tmp[i])
 
-              var tmp=Object.keys(response.data[0].subjectSelection)
+              var tmp2=Object.keys(response.data[0].subjectSelection)
 
-              for(var i=0;i<tmp.length;i++){
-                var header2=tmp[i];
+              for(var i=0;i<tmp2.length;i++){
+                var header2=tmp2[i];
                 var title="   "+header2+"  (Select One)  ";
                 if(header2=='hasSelected')
                   title='Subjects'
 
                 if(header2!='studentId')
-                  headers.value.data.push({title: title,value : header2 })
+                  headers.value.data.push({title: title,value : header2,key: 'subjectSelection.'+header2,type:2 })
               }
 
               headers.value.data.push({title: 'Action',value : 'action' })
@@ -316,9 +328,39 @@ let classes=['1','2','3','4'];
 
 
             const updateSelection=(conf)=>{
-              console.log(conf)
+
+              console.log(conf);
+              axios.put(apiUrl+`/api/v1/subjectSelection/updateSelection`,conf.subjectSelection,{
+                headers: {
+                      Authorization: Cookies.get("Authorization")
+                  },
+              }).then((response)=>{
+                  console.log(response);
+                  conf.success=true;
+                  window.setTimeout(()=>{conf.success=null},2000)
+              });
+              
+
+
             }
+
+
+            const selector=ref({
+              grade:'All',
+              stream:'All'
+            })
+
+
+            const updateGrade=()=>{
+              console.log("grading")
+            }
+
            
+
+
+            
+
+                      
 
      
 

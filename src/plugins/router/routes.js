@@ -87,6 +87,27 @@ export const routes = [
         path : 'studentReportCards',
         component: () => import('@/pages/pexam/studentReportCards.vue'),
       },
+
+      {
+        path : 'composeSMS',
+        component: () => import('@/pages/pexam/composeSMS.vue'),
+      },
+      {
+        path : 'smsLogs',
+        component: () => import('@/pages/pexam/smsLogs.vue'),
+      },
+      {
+        path : 'smsStats',
+        component: () => import('@/pages/pexam/smsStats.vue'),
+      },
+      {
+        path : 'smsBalance',
+        component: () => import('@/pages/pexam/smsBalance.vue'),
+      },
+      {
+        path:'subjectTeachers',
+        component:()=> import('@/pages/pexam/subjectTeachers.vue'),
+      },
       
       {
         path: 'account-settings',

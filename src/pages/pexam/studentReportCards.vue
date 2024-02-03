@@ -100,7 +100,7 @@ export default {
     const admNo = ref('');
     const examinationId = ref('');
     const pdfUrl = ref({
-      data:'google.com',
+      data:'',
       title:''
     });
     const stage=ref({
@@ -129,6 +129,7 @@ export default {
         },
       })
       .then(response => {
+        // console.log(response)
         const blob = new Blob([response.data], { type: 'application/pdf' });
         
 
@@ -151,10 +152,12 @@ export default {
       });
     };
 
+    // loadPdf();
+
     // Lifecycle hook equivalent to mounted
     onMounted(() => {
       
-      loadPdf();
+      loadPdf()
     });
 
     // Return reactive variables and methods

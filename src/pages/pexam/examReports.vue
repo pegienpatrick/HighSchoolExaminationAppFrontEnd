@@ -88,6 +88,16 @@
 
               </VBtn>
             </VCol>
+
+            <VCol>
+              <VBtn
+              text="Send Report SMS"
+              @click="sendStudentReport"
+              color="success"
+              >
+
+              </VBtn>
+            </VCol>
           </VRow>
           
         </VCardText>
@@ -121,6 +131,17 @@
        <VBtn
        text="Fetch Students Reports"
        @click="bulkReports()"
+       >
+ 
+       </VBtn>
+     </v-col>
+
+
+     <v-col>
+       <VBtn
+       text="Send Student Reports SMS"
+       @click="smsReports"
+       color="success"
        >
  
        </VBtn>
@@ -203,6 +224,49 @@ axios.get(apiUrl + `/api/v1/examination/viewExamination/${examinationId}`, {
 
             const bulkReports=()=>{
               router.push(`/studentReportCards?examinationId=${examinationId}&stage=${stage}&stream=${stream.value.selectedStream}`)
+            }
+
+            const sendStudentReport=()=>{
+              axios.get(apiUrl + `/api/v1/reportCard/smsReportCard/${examinationId}/${stream.value.selectedAdm}`, {
+                  headers: {
+                      Authorization: Cookies.get("Authorization")
+                  },
+              }).then((response)=>{
+                console.log(response);
+                // bal.value.data=response.data;
+                alert(response.data)
+                router.push("/smsStats")
+              }).catch((error)=>{
+                console.log(error);
+                // bal.value.data=error.response.data;
+                alert("error sending:"+error.response.data);
+              })
+
+              
+            }
+
+            const smsReports=()=>{
+              // /api/v1/reportCard/smsReportCard/{examination}/{student}
+
+              const serverUrl = apiUrl + `/api/v1/reportCard/smsReportCards/${examinationId}/${stage}?stream=${stream.value.selectedStream}`;
+    
+
+              axios.get(serverUrl, {
+                  headers: {
+                      Authorization: Cookies.get("Authorization")
+                  },
+              }).then((response)=>{
+                console.log(response);
+                // bal.value.data=response.data;
+                alert(response.data);
+                router.push("/smsStats")
+                
+              }).catch((error)=>{
+                console.log(error);
+                // bal.value.data=error.response.data;
+                alert("error sending:"+error.response.data);
+              })
+              
             }
 
 

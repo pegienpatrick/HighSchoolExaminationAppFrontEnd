@@ -26,6 +26,7 @@
     "pinia": "^2.1.7",
     "prismjs": "^1.29.0",
     "roboto-fontface": "^0.10.0",
+    "select2": "^4.1.0-rc.0",
     "sweetalert2": "^11.10.4",
     "vue": "^3.3.4",
     "vue-cookies": "^1.8.3",

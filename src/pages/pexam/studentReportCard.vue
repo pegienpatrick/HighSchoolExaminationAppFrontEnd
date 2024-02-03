@@ -148,7 +148,7 @@ export default {
     const admNo = ref('');
     const examinationId = ref('');
     const pdfUrl = ref({
-      data:'google.com',
+      data:'',
       title:''
     });
     const pdfData=ref(null);
@@ -187,6 +187,7 @@ export default {
       const apiUrl = window.location.protocol + '//' + window.location.hostname + ':8080';
       const serverUrl = apiUrl + `/api/v1/reportCard/viewReportCard/${examinationId.value}/${admNo.value}`;
       
+      
       axios.get(serverUrl, {
         responseType: 'blob',
         headers: {
@@ -194,6 +195,7 @@ export default {
         },
       })
       .then(response => {
+        // console.log(response)
         const blob = new Blob([response.data], { type: 'application/pdf' });
         
 
@@ -209,12 +211,13 @@ export default {
         // document.getElementById("datapoint").title=link.download;
         pdfUrl.value.data=link.href;
         pdfUrl.value.title=link.download;
+        // console.log(response)
 
       })
       .catch(error => {
         console.error('Error fetching PDF:', error);
       });
-    };
+    }
 
     // Lifecycle hook equivalent to mounted
     onMounted(() => {

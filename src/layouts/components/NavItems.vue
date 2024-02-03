@@ -148,31 +148,25 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
       icon: 'ri-message-2-line',
     }"
   >
+    
     <VerticalNavLink
       :item="{
-        title: 'Create SMS',
-        to: '/Users',
-        icon: 'ri-pencil-line',
-      }"
-    />
-    <VerticalNavLink
-      :item="{
-        title: 'Subjects',
-        to: '/Users',
+        title: 'Sms Stats',
+        to: '/smsStats',
         icon: 'ri-book-2-line',
       }"
     />
     <VerticalNavLink
       :item="{
         title: 'Send SMS',
-        to: '/Users',
+        to: '/composeSMS',
         icon: 'ri-send-plane-2-line',
       }"
     />
     <VerticalNavLink
       :item="{
         title: 'SMS Logs',
-        to: '/Users',
+        to: '/smsLogs',
         icon: 'ri-file-list-2-line',
       }"
     />
@@ -180,7 +174,7 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
     <VerticalNavLink
       :item="{
         title: 'SMS Balance',
-        to: '/Users',
+        to: '/smsBalance',
         icon: 'ri-money-dollar-box-line',
       }"
     />
@@ -210,7 +204,7 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
     <VerticalNavLink
       :item="{
         title: 'Subject Teachers',
-        to: '/Users',
+        to: '/subjectTeachers',
         icon: 'ri-ruler-line',
       }"
     />
