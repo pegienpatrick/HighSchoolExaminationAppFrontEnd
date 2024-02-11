@@ -1,10 +1,12 @@
 <script setup>
-import axios from 'axios';
-
-import Cookies from 'vue-cookies';
-
+import AccountSettingsAccount from '@/views/pages/account-settings/AccountSettingsAccount.vue';
+import AccountSettingsNotification from '@/views/pages/account-settings/AccountSettingsNotification.vue';
+import AccountSettingsSecurity from '@/views/pages/account-settings/AccountSettingsSecurity.vue';
+import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 
+import axios from 'axios'
+import Cookies from 'vue-cookies'
 
 import GuardianForm from '@/views/pages/pexam/GuardiansForm.vue';
 
@@ -12,19 +14,10 @@ const router = useRouter();
 
 
 
+
+
 const accountData = {
-  admNo: '',
-  surname: '',
-  firstName: '',
-  otherName: '',
-  dateOfBirth: '',
-  birthCertno: '',
-  ifmisNo: '',
-  gender: '',
-  stream: '',
-  stage: '',
-  kcpeMarks: '',
-  cohort: '',
+  avatarImg:''
 
 }
 
@@ -63,16 +56,12 @@ const resetAvatar = () => {
 
 let apiUrl=window.location.protocol+"//"+window.location.hostname+":8080"
 
-const prefInsert=ref({
-  admNo:'',
-  name:''
-});
 
 
 
-const admNo = router.currentRoute.value.query.admNo;
 
-let prefInsertadmNo=''
+
+
 
 let saveSuccess=ref({
   data: 0
@@ -80,7 +69,8 @@ let saveSuccess=ref({
 
 
 const submitForm = async () => {
-
+  accountDataLocal.value.fullname=accountDataLocal.value.fname;
+  
   console.log(accountDataLocal.value.gender)
   if(accountDataLocal.value.gender==''||accountDataLocal.value.gender==null){
     form.value.registerError='You must select gender'
@@ -89,9 +79,9 @@ const submitForm = async () => {
   isLoading=true;
  
 
-  accountDataLocal.value.dateOfBirth=new Date(form.value.dateOfBirth)
+  
   try {
-    const response = await axios.put(apiUrl+`/api/v1/student/updateStudent/${admNo}`, 
+    const response = await axios.put(apiUrl+`/api/v1/user/updateUser`, 
       accountDataLocal.value,
       {
         headers:{
@@ -101,8 +91,8 @@ const submitForm = async () => {
     });
     isLoading=false;
     form.value.registerError=''
-    console.log(prefInsert)
-    // resetForm();
+    
+   
     saveSuccess.value.data=new Date().getTime();
     setTimeout(()=>{saveSuccess.value.data=0},3000)
 
@@ -145,7 +135,7 @@ const submitForm = async () => {
 
 
 
-axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo}`, {
+axios.get(apiUrl + `/api/v1/user/userInfo`, {
             headers: {
                 Authorization: Cookies.get("Authorization")
             },
@@ -153,19 +143,9 @@ axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo}`, {
             .then((response) => {
                 // Successfully fetched student details
                 console.log(response);
-                var studentDetails = response.data.body;
-                console.log(studentDetails);
-                const originalDate = new Date(studentDetails.dateOfBirth);
-  
-                const day = String(originalDate.getDate()).padStart(2, '0');
-                const month = String(originalDate.getMonth() + 1).padStart(2, '0');
-                const year = originalDate.getFullYear();
-                
-                studentDetails.dateOfBirth = `${day}-${month}-${year}`;
-                form.value.dateOfBirth=`${year}-${month}-${day}`
-                console.log(form.value.dateOfBirth)
+                              
 
-                accountDataLocal.value=studentDetails
+                accountDataLocal.value=response.data;
             })
             .catch((error) => {
                 // Error handling
@@ -181,7 +161,7 @@ axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo}`, {
             })
 
 
-  axios.get(apiUrl + `/api/v1/studentPhoto/getStudentPhoto/${admNo}`, {
+  axios.get(apiUrl + `/api/v1/UserPhoto/getUserPhoto`, {
     responseType: 'blob',
             headers: {
                 Authorization: Cookies.get("Authorization")
@@ -207,7 +187,7 @@ axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo}`, {
               console.log(Object.keys(formData))
               console.log(Object.values(formData))
 
-              axios.post(apiUrl+`/api/v1/studentPhoto/uploadStudentPhoto/${admNo}`, formData,{
+              axios.post(apiUrl+`/api/v1/UserPhoto/uploadUserPhoto`, formData,{
                 headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization':Cookies.get("Authorization"),
@@ -247,8 +227,16 @@ axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo}`, {
                       
 
     <VCol cols="12">
-      <VCard title="Edit Student Details">
+      <VCard>
 
+        <v-card-title>
+          <v-icon
+          icon="ri-group-line"
+          ></v-icon>
+          Edit Account Details
+        </v-card-title>
+        <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
 
         <VCardText class="d-flex">
           <!-- 👉 Avatar -->
@@ -324,48 +312,26 @@ axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo}`, {
           <!-- 👉 Form -->
           <VForm class="mt-6">
             <VRow>
-              <!-- 👉 Admission Number -->
+              
               <VCol md="6" cols="12">
                 <VTextField
-                  v-model="accountDataLocal.admNo"
-                  label="Admission Number"
-                  type="number"
+                  v-model="accountDataLocal.fname"
+                  label="Full Name"
+                  type="text"
                 />
               </VCol>
 
-              <!-- 👉 Surname -->
+              
               <VCol md="6" cols="12">
                 <VTextField
-                  v-model="accountDataLocal.surname"
-                  label="Surname"
+                  v-model="accountDataLocal.username"
+                  label="Username"
                 />
               </VCol>
 
-              <!-- 👉 First Name -->
-              <VCol md="6" cols="12">
-                <VTextField
-                  v-model="accountDataLocal.firstName"
-                  label="First Name"
-                />
-              </VCol>
+             
 
-              <!-- 👉 Other Name -->
-              <VCol md="6" cols="12">
-                <VTextField
-                  v-model="accountDataLocal.otherName"
-                  label="Other Name"
-                />
-              </VCol>
-
-              <!-- 👉 Date of Birth -->
-<VCol md="6" cols="12">
-  <VTextField
-    v-model="form.dateOfBirth"
-    label="Date of Birth"
-    type="date"
-    placeholder="YYYY-MM-DD"
-  />
-</VCol>
+         
 
 <!-- 👉 Gender -->
 <VCol md="6" cols="12">
@@ -378,69 +344,29 @@ axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo}`, {
                 />
               </VCol>
 
-              <!-- 👉 Birth Certificate Number -->
-              <VCol md="6" cols="12">
-                <VTextField
-                  v-model="accountDataLocal.birthCertno"
-                  label="Birth Certificate Number"
-                />
-              </VCol>
-
-              <!-- 👉 IFMIS Number -->
-              <VCol md="6" cols="12">
-                <VTextField
-                  v-model="accountDataLocal.ifmisNo"
-                  label="IFMIS Number"
-                />
-              </VCol>
-
               
+             
 
-
-              <!-- 👉 Stage(Form) -->
+            
+            
               <VCol md="6" cols="12">
                 <VTextField
-                  v-model="accountDataLocal.stage"
-                  label="Stage (Form)"
-                  type="number"
-                />
-              </VCol>
-
-              <!-- 👉 Stream -->
-              <!-- <VCol md="6" cols="12">
-                <VTextField
-                  v-model="accountDataLocal.stream"
-                  label="Stream"
-                />
-              </VCol> -->
-              <VCol md="6" cols="12">
-                <VSelect
-                  v-model="accountDataLocal.stream"
-                  label="Stream"
-                  :items="['A','B','C']"
-                />
-              </VCol>
-              
-
-              
-
-              <!-- 👉 KCPE Marks -->
-              <VCol md="6" cols="12">
-                <VTextField
-                  v-model="accountDataLocal.kcpeMarks"
-                  label="KCPE Marks"
-                  type="number"
+                  v-model="accountDataLocal.email"
+                  label="Email"
+                  type="email"
                 />
               </VCol>
 
               <!-- 👉 Cohort -->
               <VCol md="6" cols="12">
                 <VTextField
-                  v-model="accountDataLocal.cohort"
-                  label="Cohort"
-                  type="number"
+                  v-model="accountDataLocal.phone"
+                  label="Phone"
+                  type="tel"
                 />
               </VCol>
+             
+             
 
               <!-- 👉 Form Actions -->
               <VCol cols="12" class="d-flex flex-wrap gap-4">
@@ -461,22 +387,6 @@ axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo}`, {
     </VCol>
   </VRow>
 
-
-  <VRow>
-    <VCol>
-    <VCard>
-      <VCardTitle>
-        Guardians
-      </VCardTitle>
-      <VCardText>
-
-        <GuardianForm/>
-
-      </VCardText>
-
-    </VCard>
-  </VCol>
-  </VRow>
 
 
 

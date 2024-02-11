@@ -1,14 +1,44 @@
 <template>
   <v-app>
     <v-container>
+      
       <v-row>
+        
         <v-col cols="12">
-          <v-card elevation="3">
+          
+          <v-card elevation="3" >
+
+            <div class="w-100 d-block align-center">
+            <VAvatar
+              :image="avatarImg"
+              size="200" class="d-block"
+              
+            />
+          </div>
+            
+
+
+
             <v-card-title class="text-h6 font-weight-bold">Student Details</v-card-title>
             <v-card-text>
               <VCol cols="12">
   <VCard title="Student Details">
+
+    
+
+
+    
+
+
+    
+  
+
+
+
+
     <VCardText class="d-flex">
+
+      
 
       <div v-if="studentDetails==null">
       <!-- display error -->
@@ -49,8 +79,14 @@
 
 
 
+    
+
       <!-- 👉 Display Data -->
       <VRow v-if="studentDetails!=null">
+
+
+
+    
         <!-- 👉 Admission Number -->
         <VCol md="6" cols="12">
           <p><strong>Admission Number:</strong> {{ studentDetails.admNo }}</p>
@@ -141,6 +177,23 @@
 </v-row>
 
 
+<VRow>
+    <VCol>
+    <VCard>
+      <VCardTitle>
+        Guardians
+      </VCardTitle>
+      <VCardText>
+
+        <GuardianForm/>
+
+      </VCardText>
+
+    </VCard>
+  </VCol>
+  </VRow>
+
+
      
     </v-container>
   </v-app>
@@ -156,11 +209,21 @@ import Cookies from 'vue-cookies';
 
 import Swal from 'sweetalert2';
 
+import GuardianForm from '@/views/pages/pexam/GuardiansForm.vue';
+
+
 export default {
+  components:
+  {
+    GuardianForm,
+  }
+  ,
   data() {
     return {
       studentDetails: {},
-      admNo:''
+      admNo:'',
+      avatarImg:''
+
     };
   },
   mounted() {
@@ -210,6 +273,21 @@ export default {
                 }
             });
 
+
+
+            axios.get(apiUrl + `/api/v1/studentPhoto/getStudentPhoto/${this.admNo}`, {
+    responseType: 'blob',
+            headers: {
+                Authorization: Cookies.get("Authorization")
+            },
+        })
+            .then((response) => {
+              const blob = new Blob([response.data], { type: 'application/png' });
+              this.avatarImg= URL.createObjectURL(blob)
+              
+            })
+
+
     },
     editStudent() {
       // Redirect to the edit page, you need to define your edit route
@@ -250,3 +328,4 @@ export default {
   },
 };
 </script>
+

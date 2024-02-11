@@ -248,6 +248,43 @@ const downloadMerit=()=>{
     Students
   </v-head> -->
   <div>
+    <VRow>
+      <VCol>
+        <VBtn
+              :to="`/viewExam?examinationId=${examinationId}&stage=${stage}`"
+              text="Exam Home"
+              
+              >
+              <VIcon
+              icon="ri-home-line"
+              />
+              <VLabel></VLabel>
+              Exam Home
+              </VBtn>
+      </VCol>
+            <VCol>
+              <VBtn
+              :to="`/marksSheet?exam=${examinationId}&stage=${stage}`"
+              text="Edit Marks"
+              />
+            </VCol>
+           
+
+            <VCol>
+              <VBtn
+              :to="`/generateMeritList?exam=${examinationId}&stage=${stage}`"
+              text="ReGenerate Exam Results"
+              />
+            </VCol>
+
+            <VCol>
+              <VBtn
+              text="Reports"
+              :to="`/viewExamReports?examinationId=${examinationId}&stage=${stage}`"
+              />
+            </VCol>
+
+          </VRow>
     <v-row>
      
     <v-col>

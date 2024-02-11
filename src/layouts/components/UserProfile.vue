@@ -16,29 +16,38 @@ const activeUser=({
 })
 
 
-axios.get(apiUrl+'/api/v1/user/userInfo',{
-  headers:{
-    'Content-Type': 'application/json',
-    Authorization: Cookies.get("Authorization")
-  },
+const loadUserInfo=()=>{
+  console.log("Checking User")
+    axios.get(apiUrl+'/api/v1/user/checkUser',{
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization: Cookies.get("Authorization")
+      },
 
-})
-.then((response) => {
-    // Code for handling the response
-    console.log(response)
-    activeUser.userInfo=response.data
-    console.log(activeUser)
-  })
-  .catch((error) => {
-    // Code for handling the error
-    console.log(error)
-    if (error.response && error.response.status === 401||error.response.status === 403) {
-      // Redirect to the login page
-      router.push('/login');
-    }
+    })
+    .then((response) => {
+        // Code for handling the response
+        // console.log(response)
+        activeUser.userInfo=response.data
+        // console.log(activeUser)
+      })
+      .catch((error) => {
+        // Code for handling the error
+        console.log(error)
+        if (error.response && error.response.status === 401||error.response.status === 403) {
+          // Redirect to the login page
+          // router.push('/');
+          console.log("Current Path : "+router.currentRoute.value.fullPath)
+          if(router.currentRoute.value.path!='/register'&&router.currentRoute.value.path!='/forgotPassword'&&router.currentRoute.value.path!='/login')
+            router.push('/login');
+          // router.push('/login');
+        }
 
-  })
+      });
+}
 
+window.setInterval(loadUserInfo,8000);
+loadUserInfo();
 
   const logOut=()=>{
 
@@ -114,7 +123,7 @@ axios.get(apiUrl+'/api/v1/user/userInfo',{
           <VDivider class="my-2" />
 
           <!-- 👉 Profile -->
-          <VListItem link>
+          <VListItem link to="/profile">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -127,7 +136,7 @@ axios.get(apiUrl+'/api/v1/user/userInfo',{
           </VListItem>
 
           <!-- 👉 Settings -->
-          <VListItem link>
+          <VListItem link to="/profilePassword">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -136,7 +145,7 @@ axios.get(apiUrl+'/api/v1/user/userInfo',{
               />
             </template>
 
-            <VListItemTitle>Settings</VListItemTitle>
+            <VListItemTitle>Password Settings</VListItemTitle>
           </VListItem>
 
          

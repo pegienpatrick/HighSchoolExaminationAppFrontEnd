@@ -1,6 +1,48 @@
 <template>
   
   <div>
+    <VRow>
+      <VCol>
+        <VBtn
+              :to="`/viewExam?examinationId=${examinationId}&stage=${stage}`"
+              text="Exam Home"
+              
+              >
+              <VIcon
+              icon="ri-home-line"
+              />
+              <VLabel></VLabel>
+              Exam Home
+              </VBtn>
+      </VCol>
+            <VCol>
+              <VBtn
+              :to="`/editMarksSheet?exam=${examinationId}&stage=${stage}`"
+              text="Edit Marks"
+              />
+            </VCol>
+            <VCol>
+              <VBtn
+              text="View Merit List"
+              :to="`/viewMeritList?exam=${examinationId}&stage=${stage}`"
+              />
+            </VCol>
+
+            <VCol>
+              <VBtn
+              :to="`/generateMeritList?exam=${examinationId}&stage=${stage}`"
+              text="Generate Exam Results"
+              />
+            </VCol>
+
+            <VCol>
+              <VBtn
+              text="Reports"
+              :to="`/viewExamReports?examinationId=${examinationId}&stage=${stage}`"
+              />
+            </VCol>
+
+          </VRow>
   <VRow>
 
     <VCol >
@@ -41,8 +83,9 @@
                 label="Stream"
                 placeholder="Select Stream"
                 :items="['All','A','B','C']"
-                value="All"
+                
                 v-model="selectedStream.data"
+                
                 />
            
           </VCol>
@@ -80,16 +123,15 @@
         </v-col>
 
           <VDataTable
-          :items="formInfo.filtered"
+          :items="selectedStream.data=='All'?formInfo.data:filterChanges()"
           :search="formInfo.search"
           class="elevation-1"
           striped
-          :items-per-page="selectedStream.data=='All'?10:formInfo.filtered.length"
+         
           :headers="headers.data"
           >
 
-          
-          
+         
         
 
         </VDataTable>
@@ -354,6 +396,20 @@ let classes=['1','2','3','4'];
           return true;
         }
           
+
+
+
+        const filterChanges=()=>{
+          console.log("filtering")
+          formInfo.value.filtered=[]
+          for(var k=0;k<formInfo.value.data.length;k++)
+            if(formInfo.value.data[k].stream==selectedStream.value.data)
+              formInfo.value.filtered.push(formInfo.value.data[k]);
+
+
+          console.log(formInfo.value.filtered)
+          return formInfo.value.filtered;
+        }
 
          
 

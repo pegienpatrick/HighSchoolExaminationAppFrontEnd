@@ -1,6 +1,25 @@
 <template>
   
   <div>
+    <VRow>
+            <VCol>
+              <VBtn
+              :to="`/viewExam?examinationId=${examinationId}&stage=${stage}`"
+              text="Exam Home"
+              
+              >
+              <VIcon
+              icon="ri-home-line"
+              />
+              <VLabel></VLabel>
+              Exam Home
+              </VBtn>
+            </VCol>
+           
+
+            
+
+          </VRow>
   <VRow>
 
     <VCol >
@@ -59,6 +78,43 @@
 
     </VCol>
 
+  </VRow>
+
+  <VRow>
+    <VCol>
+      <VCard title="Informative ReportCard Message">
+        <VCardText>
+          <VRow>
+            <VCol>
+              <VTextarea
+              label="ReportCard Message"
+              placeholder="Type your message which will be shown on all report Cards at the bottom."
+              counter
+              lines
+              v-model="form.reportCardMsg"
+              ></VTextarea>
+              
+            </VCol>
+          </VRow>
+          <VRow>
+    <VCol>
+
+
+
+      <VBtn
+      :text="form.success?'Saved Successfully':'Save ReportCard Message'"
+      :color="form.success?'success':'primary'"
+      @click="updateReportCardMsg"
+      >
+
+      </VBtn>
+      
+    </VCol>
+  </VRow>
+        </VCardText>
+      </VCard>
+
+    </VCol>
   </VRow>
 
 
@@ -155,6 +211,27 @@
 
   </VRow>
 
+  <VRow>
+    <VCol>
+      <VCard title="General Reports">
+        <VCardText>
+          <VRow>
+    <VCol>
+
+      <VBtn
+      text="view Overall Results Analysis"
+      >
+
+      </VBtn>
+      
+    </VCol>
+  </VRow>
+        </VCardText>
+      </VCard>
+
+    </VCol>
+  </VRow>
+
   
   
 
@@ -175,6 +252,7 @@ import Cookies from 'vue-cookies';
 import { useRouter } from 'vue-router';
 
 
+
 const router = useRouter();
 
 let apiUrl = window.location.protocol + "//" + window.location.hostname + ":8080";
@@ -188,7 +266,9 @@ const form=ref({
   
   "year": 2024,
   "term": '',
-  "title": ""
+  "title": "",
+  success:true,
+  
 
 })
 
@@ -197,6 +277,8 @@ const stream=ref({
   selectedAdm:''
 
 })
+
+
 
 
 let classes=['1','2','3','4'];
@@ -269,6 +351,17 @@ axios.get(apiUrl + `/api/v1/examination/viewExamination/${examinationId}`, {
               
             }
 
+            const updateReportCardMsg=()=>{
+              form.value.examinationId=form.value.num;
+              axios.put(apiUrl+'/api/v1/examination/updateReportCardMessage',form.value,{
+                  headers: {
+                      Authorization: Cookies.get("Authorization")
+                  },
+              }).then((response)=>{
+                form.value.success=true;
+                window.setTimeout(()=>{form.value.success=false},2500)
+              })
+            }
 
 
 

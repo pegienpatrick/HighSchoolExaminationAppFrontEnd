@@ -1,6 +1,48 @@
 <template>
   
   <div>
+    <VRow>
+      <VCol>
+        <VBtn
+              :to="`/viewExam?examinationId=${examinationId}&stage=${stage}`"
+              text="Exam Home"
+              
+              >
+              <VIcon
+              icon="ri-home-line"
+              />
+              <VLabel></VLabel>
+              Exam Home
+              </VBtn>
+      </VCol>
+            <VCol>
+              <VBtn
+              :to="`/marksSheet?exam=${examinationId}&stage=${stage}`"
+              text="view Marks"
+              />
+            </VCol>
+            <VCol>
+              <VBtn
+              text="View Merit List"
+              :to="`/viewMeritList?exam=${examinationId}&stage=${stage}`"
+              />
+            </VCol>
+
+            <VCol>
+              <VBtn
+              :to="`/generateMeritList?exam=${examinationId}&stage=${stage}`"
+              text="Generate Exam Results"
+              />
+            </VCol>
+
+            <VCol>
+              <VBtn
+              text="Reports"
+              :to="`/viewExamReports?examinationId=${examinationId}&stage=${stage}`"
+              />
+            </VCol>
+
+          </VRow>
   <VRow>
 
     <VCol >
@@ -65,9 +107,7 @@
         <VCardTitle>
           <VRow>
             <VCol>
-
-            
-          <p><strong>Marks</strong></p>
+          <p><strong>Marks</strong></p>(Auto Saving)
         </VCol>
         <VCol>
           <VRow>
@@ -75,7 +115,7 @@
           </VRow>
           <VRow>
           <VBtn
-          text="Save Changes"
+          text="Save unsaved Updates"
           @click="retryUpdating"
           ></VBtn>
         </VRow>
@@ -94,8 +134,11 @@
         <v-card>
           <v-card-title>
             Form
-            <v-spacer></v-spacer>
-            <v-btn icon @click="closeDialog">
+            
+            <v-btn icon @click="closeDialog"
+            style="float:inline-end"
+            color="error"
+            >
               <v-icon>ri-close-line</v-icon>
             </v-btn>
           </v-card-title>
@@ -117,9 +160,17 @@
             </v-form>
           </v-card-text>
 
-          <v-card-actions>
-            <v-btn @click="submitForm" >Submit</v-btn>
-          </v-card-actions>
+          
+          <!-- <v-card-actions
+          color="primary"
+          > -->
+            <v-btn @click="submitForm" 
+            color="primary"
+            bg="success"
+            background-color="primary"
+            text="Submit"
+            ></v-btn>
+          <!-- </v-card-actions> -->
         </v-card>
       </v-dialog>
 

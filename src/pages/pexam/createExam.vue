@@ -53,6 +53,15 @@
 
 
             </VRow>
+
+            <VRow>
+              <VCol md="6" cols="12">
+                <VCheckbox v-for="f in classes" :key="f" :label="`Form ${f}`" v-model="form.sel[f]"></VCheckbox>
+              </VCol>
+            </VRow>
+
+
+
             <VRow>
               <VCol>
             <VBtn
@@ -98,12 +107,19 @@ const form=ref({
   
   "year": 2024,
   "term": '',
-  "title": ""
+  "title": "",
+  grades:[],
+  sel:{},
 
 })
 
+let classes=['1','2','3','4'];
 
 const submitForm=()=>{
+  form.value.grades=[]
+  for(const ff in form.value.sel)
+    if(form.value.sel[ff])
+    form.value.grades.push(ff);
 
   axios.post(apiUrl +"/api/v1/examination/newExamination",form.value, {
           headers: {

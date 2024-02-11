@@ -14,11 +14,11 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
     <VerticalNavLink
       :item="{
         title: 'All Users',
-        to: '/Users',
+        to: '/users',
         icon: 'ri-user-line',
       }"
     />
-     <VerticalNavLink
+     <!-- <VerticalNavLink
       :item="{
         title: 'Subjects',
         to: '/Users',
@@ -31,7 +31,7 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
         to: '/Users',
         icon: 'ri-git-branch-line',
       }"
-    />
+    /> -->
 
     <VerticalNavLink
       :item="{
@@ -41,13 +41,13 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
       }"
     />
 
-    <VerticalNavLink
+    <!-- <VerticalNavLink
       :item="{
         title: 'School Settings',
         to: '/Users',
         icon: 'ri-settings-5-line',
       }"
-    />
+    /> -->
 
 
     <VerticalNavLink
@@ -95,7 +95,7 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
       :item="{
         title: 'Students Subjects',
         to: '/studentsubjects',
-        icon: 'ri-book-mark-line',
+        icon: 'ri-article-line',
       }"
     />
 
@@ -120,7 +120,7 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
      <VerticalNavLink
       :item="{
         title: 'view Examinations',
-        to: '/viewExaminations',
+        to: '/viewTerms',
         icon: 'ri-book-line',
       }"
     />
@@ -132,13 +132,13 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
       }"
     />
    
-    <VerticalNavLink
+    <!-- <VerticalNavLink
       :item="{
         title: 'Results',
         to: '/Users',
         icon: 'ri-bar-chart-2-line',
       }"
-    />
+    /> -->
   </VerticalNavGroup>
 
   <!-- SMS Service -->
@@ -190,14 +190,14 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
     <VerticalNavLink
       :item="{
         title: 'Exams TimeTables',
-        to: '/Users',
+        to: '/examTimeTable',
         icon: 'ri-pencil-line',
       }"
     />
     <VerticalNavLink
       :item="{
-        title: 'Class Timetables',
-        to: '/Users',
+        title: 'Teaching Timetables',
+        to: '/teachingTimeTable',
         icon: 'ri-book-line',
       }"
     />
@@ -220,21 +220,21 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
     <VerticalNavLink
       :item="{
         title: 'Edit Profile',
-        to: '/Users',
+        to: '/profile',
         icon: 'ri-pencil-line',
       }"
     />
     <VerticalNavLink
       :item="{
         title: 'Change Password',
-        to: '/Users',
+        to: '/profilePassword',
         icon: 'ri-lock-password-line',
       }"
     />
     <VerticalNavLink
       :item="{
         title: 'Notifications',
-        to: '/Users',
+        to: '/notifications',
         icon: 'ri-notification-line',
       }"
     />

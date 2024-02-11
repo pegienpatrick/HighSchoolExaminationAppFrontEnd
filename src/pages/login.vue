@@ -15,6 +15,9 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter();
 
+// router.push("/")
+// router.push("/login")
+
 
 
 const form = ref({
@@ -152,7 +155,7 @@ const login = async () => {
 
                 <a
                   class="ms-2 mb-1"
-                  href="javascript:void(0)"
+                  href="/forgotPassword"
                 >
                   Forgot Password?
                 </a>
@@ -244,3 +247,19 @@ const login = async () => {
 <style lang="scss">
 @use "@core/scss/pages/page-auth.scss";
 </style>
+
+<!-- <script>
+
+
+
+
+const router2 = useRouter();
+
+
+console.log(router2)
+
+// if(router2.currentRoute!="/login")
+//   router2.push("/login")
+
+const money=9;
+</script> -->

@@ -42,6 +42,10 @@ export const routes = [
         component: () => import('@/pages/pexam/viewExaminations.vue'),
       },
       {
+        path: 'viewTerms',
+        component: () => import('@/pages/pexam/viewTerms.vue'),
+      },
+      {
         path : 'marksSheet',
         component: () => import('@/pages/pexam/marksSheet.vue'),
       },
@@ -108,6 +112,36 @@ export const routes = [
         path:'subjectTeachers',
         component:()=> import('@/pages/pexam/subjectTeachers.vue'),
       },
+      {
+        path: 'profile',
+        component: () => import('@/pages/pexam/profile/account-settings.vue'),
+      },
+      {
+        path: 'profilePassword',
+        component: () => import('@/pages/pexam/profile/password-settings.vue'),
+      },
+      {
+        path: 'notifications',
+        component: () => import('@/pages/pexam/profile/notifications.vue'),
+      },
+
+      {
+        path:'users',
+        component:()=> import('@/pages/pexam/account/Users.vue'),
+      },
+
+      {
+        path:'teachingTimeTable',
+        component:()=> import('@/pages/pexam/timetable/TeachingTimeTable.vue'),
+      },
+
+      {
+        path:'examTimeTable',
+        component:()=> import('@/pages/pexam/timetable/ExamTimeTable.vue'),
+      },
+     
+     
+      
       
       {
         path: 'account-settings',
@@ -148,9 +182,14 @@ export const routes = [
         component: () => import('@/pages/register.vue'),
       },
       {
+        path: 'forgotPassword',
+        component: () => import('@/pages/pexam/resetPassword/forgotPassword.vue'),
+      },
+      {
         path: '/:pathMatch(.*)*',
         component: () => import('@/pages/[...error].vue'),
       },
+      
     ],
   },
 ]
