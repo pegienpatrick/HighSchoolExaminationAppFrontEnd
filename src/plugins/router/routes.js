@@ -140,6 +140,10 @@ export const routes = [
         component:()=> import('@/pages/pexam/timetable/ExamTimeTable.vue'),
       },
      
+      {
+        path:'viewAnalysis',
+        component:()=> import('@/pages/pexam/analysis/OverallAnalysis.vue'),
+      },
      
       
       

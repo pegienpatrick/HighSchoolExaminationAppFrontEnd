@@ -1,10 +1,10 @@
 <script setup>
-import NavItems from '@/layouts/components/NavItems.vue'
-import logo from '@images/logo.svg?raw'
-import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
 import Footer from '@/layouts/components/Footer.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
+import NavItems from '@/layouts/components/NavItems.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
+import logo from '@images/logo.svg?raw'
+import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
 </script>
 
 <template>
@@ -26,22 +26,26 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
           style="user-select: none;"
         >
           <!-- 👉 Search Trigger button -->
-          <IconBtn>
+          <!-- <IconBtn>
             <VIcon icon="ri-search-line" />
-          </IconBtn>
+          </IconBtn> -->
 
-          <span class="d-none d-md-flex align-center text-disabled">
+          <!-- <span class="d-none d-md-flex align-center text-disabled">
             <span class="me-3">Search</span>
             <span class="meta-key">&#8984;K</span>
-          </span>
+          </span> -->
         </div>
 
         <VSpacer />
 
         
 
-        <IconBtn class="me-2">
-          <VIcon icon="ri-notification-line" />
+        <IconBtn class="me-2"
+        to="/notifications"
+        >
+          <VIcon icon="ri-notification-line"
+          
+          />
         </IconBtn>
 
         <NavbarThemeSwitcher class="me-2" />

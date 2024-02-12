@@ -220,6 +220,7 @@
 
       <VBtn
       text="view Overall Results Analysis"
+      @click="viewAnalysis"
       >
 
       </VBtn>
@@ -361,6 +362,12 @@ axios.get(apiUrl + `/api/v1/examination/viewExamination/${examinationId}`, {
                 form.value.success=true;
                 window.setTimeout(()=>{form.value.success=false},2500)
               })
+            }
+
+
+
+            const viewAnalysis=()=>{
+              router.push(`/viewAnalysis?examinationId=${examinationId}&stage=${stage}&stream=All`)
             }
 
 

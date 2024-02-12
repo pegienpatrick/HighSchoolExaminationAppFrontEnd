@@ -4,6 +4,16 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
 </script>
 
 <template>
+
+<!-- Dashboard -->
+<VerticalNavLink
+      :item="{
+        title: 'DashBoard',
+        to: '/dashboard',
+        icon: 'ri-home-line',
+      }"
+    />
+
   <!-- Admin -->
   <VerticalNavGroup
     :item="{

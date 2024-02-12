@@ -33,7 +33,7 @@
         <VCol>
 
           <VBtn
-          to="/searchStudent"
+          @click="searchAgain"
           >
             <VIcon
             icon="ri-restart-line"
@@ -141,10 +141,19 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
+
+const searchAgain=()=>{
+      router.go(-1);
+    }
+
 export default {
+
+  
   setup() {
     // Define reactive variables
-    const studentDetails = ref({});
+    const studentDetails = ref({
+      admNo:''
+    });
     const admNo = ref('');
     const examinationId = ref('');
     const pdfUrl = ref({
@@ -154,6 +163,11 @@ export default {
     const pdfData=ref(null);
 
     const router = useRouter();
+
+
+    const searchAgain=()=>{
+      router.go(-1);
+    }
 
     // Fetch student details
     const fetchStudentDetails = () => {
@@ -168,11 +182,11 @@ export default {
       })
       .then((response) => {
         studentDetails.value = response.data.body;
-        const originalDate = new Date(studentDetails.value.dateOfBirth);
-        const day = String(originalDate.getDate()).padStart(2, '0');
-        const month = String(originalDate.getMonth() + 1).padStart(2, '0');
-        const year = originalDate.getFullYear();
-        studentDetails.value.dateOfBirth = `${day}-${month}-${year}`;
+        // const originalDate = new Date(studentDetails.value.dateOfBirth);
+        // const day = String(originalDate.getDate()).padStart(2, '0');
+        // const month = String(originalDate.getMonth() + 1).padStart(2, '0');
+        // const year = originalDate.getFullYear();
+        // studentDetails.value.dateOfBirth = `${day}-${month}-${year}`;
       })
       .catch((error) => {
         console.error('Error fetching student details:', error);
@@ -181,6 +195,7 @@ export default {
         }
       });
     };
+
 
     // Load PDF
     const loadPdf = () => {
@@ -219,6 +234,11 @@ export default {
       });
     }
 
+
+    
+
+    // searchAgain();
+
     // Lifecycle hook equivalent to mounted
     onMounted(() => {
       fetchStudentDetails();
@@ -233,6 +253,7 @@ export default {
       pdfUrl,
       fetchStudentDetails,
       loadPdf,
+      searchAgain
     };
   },
 };
