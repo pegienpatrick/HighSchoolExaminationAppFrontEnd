@@ -390,7 +390,7 @@ axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo}`, {
               <VCol md="6" cols="12">
                 <VTextField
                   v-model="accountDataLocal.ifmisNo"
-                  label="IFMIS Number"
+                  label="NEMIS Number"
                 />
               </VCol>
 
@@ -444,7 +444,9 @@ axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo}`, {
 
               <!-- 👉 Form Actions -->
               <VCol cols="12" class="d-flex flex-wrap gap-4">
-                <VBtn @click="submitForm">Save Changes</VBtn>
+                <VBtn @click="submitForm"
+                :color="saveSuccess.data?'success':'primary'"
+                >{{ saveSuccess.data?'Saved Successfully':'Save Changes' }}</VBtn>
 
                 <!-- <VBtn
                   color="secondary"

@@ -11,12 +11,13 @@
               <VBtn
              
               text="TimeTable Settings"
+              to="/timetableSettings"
               />
             </VCol>
             <VCol>
               <VBtn
               text="Lessons Per Week"
-              
+              to="/lessonsPerWeek"
               />
             </VCol>
 

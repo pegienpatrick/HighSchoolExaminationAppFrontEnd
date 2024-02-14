@@ -124,7 +124,7 @@
 
         <!-- 👉 IFMIS Number -->
         <VCol md="6" cols="12">
-          <p><strong>IFMIS Number:</strong> {{ studentDetails.ifmisNo }}</p>
+          <p><strong>NEMIS Number:</strong> {{ studentDetails.ifmisNo }}</p>
         </VCol>
 
         <!-- 👉 Stage(Form) -->

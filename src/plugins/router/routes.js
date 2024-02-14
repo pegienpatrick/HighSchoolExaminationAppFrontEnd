@@ -144,7 +144,19 @@ export const routes = [
         path:'viewAnalysis',
         component:()=> import('@/pages/pexam/analysis/OverallAnalysis.vue'),
       },
+      {
+        path:'lessonsPerWeek',
+        component:()=> import('@/pages/pexam/timetable/subjectPerWeek.vue'),
+      },
+      {
+        path:'timetableSettings',
+        component:()=> import('@/pages/pexam/timetable/TimetableSettings.vue'),
+      },
      
+      {
+        path:'venues',
+        component:()=> import('@/pages/pexam/timetable/Venues.vue'),
+      },
       
       
       {

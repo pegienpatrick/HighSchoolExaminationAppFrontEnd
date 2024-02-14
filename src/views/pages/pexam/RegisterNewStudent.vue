@@ -272,7 +272,7 @@ const submitForm = async () => {
               <VCol md="6" cols="12">
                 <VTextField
                   v-model="accountDataLocal.ifmisNo"
-                  label="IFMIS Number"
+                  label="NEMIS Number"
                 />
               </VCol>
 

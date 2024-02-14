@@ -218,6 +218,13 @@ import VerticalNavLink from '@layouts/components/VerticalNavLink.vue';
         icon: 'ri-ruler-line',
       }"
     />
+    <VerticalNavLink
+      :item="{
+        title: 'Venues',
+        to: '/venues',
+        icon: 'ri-school-line',
+      }"
+    />
   </VerticalNavGroup>
 
   <!-- User Profile -->
