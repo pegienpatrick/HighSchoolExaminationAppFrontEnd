@@ -101,16 +101,22 @@ v-model="selection.grade"
         </VCardTitle>
         <VCardText>
 
+        
+          
           
         <VRow 
         
         v-for="lessons in selections.data"
         :key="lessons.subjectCode"
+       
+        align="center"
+        style="padding: 20px;"
         >
           
           
           <VCol
-         
+         min-width="500"
+         style="min-inline-size: 200px;"
           >
          
           <v-text-field
@@ -122,7 +128,7 @@ v-model="selection.grade"
               ></v-text-field>
           
             </VCol>
-            <VCol>
+            <VCol style="min-inline-size: 200px;" min-width="500">
               <VSwitch
               label="Join Streams"
               v-model="lessons.joinStreams"
@@ -130,23 +136,56 @@ v-model="selection.grade"
               
             </VCol>
 
-            <VCol>
+            <VCol style="min-inline-size: 200px;" min-width="500">
+              <VRow>
               <VSwitch
               label="Has Double"
               v-model="lessons.hasDouble"
               ></VSwitch>
+            </VRow>
+              <VRow v-if="lessons.hasDouble">
+              <VCol>
+              <VSelect 
+              :label="'F'+lessons.grade+' '+lessons.subjectName+' Double Venue'"
+              v-model="lessons.doubleVenue"
+              :items="venues"
+              item-title="name"
+              >
+
+              </VSelect>
+            </VCol>
+
+
+              
+            </VRow>
+
+              
               
             </VCol>
 
-            <VCol>
+            <VCol style="min-inline-size: 200px;">
+              <VRow>
               <VSwitch
               label="Has Dedicated Venue"
               v-model="lessons.hasDedicatedVenue"
               ></VSwitch>
+            </VRow>
+
+            <VRow v-if="lessons.hasDedicatedVenue">
+              <VCol>
+              <VSelect 
+              :label="'F'+lessons.grade+' '+lessons.subjectName+' Dedicated Venue'"
+              v-model="lessons.dedicatedVenues"
+              :items="venues"
+              item-title="name"
+              >
+              </VSelect>
+            </VCol>
+            </VRow>
               
             </VCol>
             
-            <VCol >
+            <VCol style="min-inline-size: 200px;" >
                 <VBtn
                 :text="lessons.success==null?'Update':'Updated'"
                 :color="lessons.success==null?'primary':'success'"
@@ -161,7 +200,7 @@ v-model="selection.grade"
             </VRow>
 
           
-
+        
         
           
           
@@ -292,6 +331,23 @@ onMounted(() => {
 //   console.log(subjectTeacher);
 // }
 
+const venues=ref(null)
+
+const loadVenues=()=>{
+
+axios.get(apiUrl+'/api/v1/venue/listVenues',{
+                      headers: {
+                          Authorization: Cookies.get("Authorization")
+                      },
+                  })
+                      .then((response) => {
+                        console.log(response.data);
+                        venues.value=response.data;
+                      });
+
+}
+
+loadVenues();
 
            
 
