@@ -122,9 +122,9 @@
           <p><strong>Birth Certificate Number:</strong> {{ studentDetails.birthCertno }}</p>
         </VCol>
 
-        <!-- 👉 IFMIS Number -->
+        <!-- 👉 nemis Number -->
         <VCol md="6" cols="12">
-          <p><strong>NEMIS Number:</strong> {{ studentDetails.ifmisNo }}</p>
+          <p><strong>NEMIS Number:</strong> {{ studentDetails.nemisNo }}</p>
         </VCol>
 
         <!-- 👉 Stage(Form) -->

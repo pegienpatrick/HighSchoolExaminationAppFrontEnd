@@ -204,6 +204,7 @@
                 <VTextField
                   v-if="c.type == 2"
                   v-model="item.marks[c.value].marks"
+                  :bg-color="item.marks[c.value].subjectTeacher==activeUser.num?'white':'#EF9A9A'"
                   :label="subjectMap.get(item.marks[c.value].subjectCode).subjectRep+'('+item.admNo+')'"
                   @change="updateMarks(item.marks[c.value])"
               
@@ -240,6 +241,7 @@
 import axios from 'axios';
 import Cookies from 'vue-cookies';
 import { useRouter } from 'vue-router';
+
 
 
 const router = useRouter();
@@ -500,8 +502,43 @@ let classes=['1','2','3','4'];
         }
           
 
-         
+         const activeUser=ref({
+            num:null
+         })
 
+
+        const loadUserInfo=()=>{
+          console.log("Checking User")
+            axios.get(apiUrl+'/api/v1/user/checkUser',{
+              headers:{
+                'Content-Type': 'application/json',
+                Authorization: Cookies.get("Authorization")
+              },
+
+            })
+            .then((response) => {
+                // Code for handling the response
+                // console.log(response)
+                activeUser.value=response.data
+                // console.log(activeUser)
+              })
+              .catch((error) => {
+                // Code for handling the error
+                console.log(error)
+                if (error.response && error.response.status === 401||error.response.status === 403) {
+                  // Redirect to the login page
+                  // router.push('/');
+                  console.log("Current Path : "+router.currentRoute.value.fullPath)
+                  if(router.currentRoute.value.path!='/register'&&router.currentRoute.value.path!='/forgotPassword'&&router.currentRoute.value.path!='/login')
+                    router.push('/login');
+                  // router.push('/login');
+                }
+
+              });
+}
+
+
+loadUserInfo();
 
             
 

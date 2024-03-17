@@ -25,6 +25,8 @@
               <VBtn
              @click="generateTimeTable"
               text="Generate New TimeTable"
+                :loading="generating"
+                :color="generating.value?'success':'primary'"
               />
             </VCol>
 
@@ -104,12 +106,54 @@
               >
 
                 <v-window-item value="class">
+                  <a class="btn btn-primary" color="success" :download="pdfUrl.title1" :href="pdfUrl.data1">
+      <VBtn
+      text="Download"
+      >
+     Download _
+     
+      <VIcon
+      icon="ri-download-line"
+      >
+
+      </VIcon>
+
+      </VBtn>
+    </a>
                   <iframe :src="pdfUrl.data1" width="100%" height="1000" frameborder="0" :title="pdfUrl.title1"></iframe>
                 </v-window-item>
                 <v-window-item value="teacher">
+                  <a class="btn btn-primary" color="success" :download="pdfUrl.title2" :href="pdfUrl.data2">
+      <VBtn
+      text="Download"
+      >
+     Download _
+     
+      <VIcon
+      icon="ri-download-line"
+      >
+
+      </VIcon>
+
+      </VBtn>
+    </a>
                   <iframe :src="pdfUrl.data2" width="100%" height="1000" frameborder="0" :title="pdfUrl.title2"></iframe>
                 </v-window-item>
                 <v-window-item value="venue">
+                  <a class="btn btn-primary" color="success" :download="pdfUrl.title3" :href="pdfUrl.data3">
+      <VBtn
+      text="Download"
+      >
+     Download _
+     
+      <VIcon
+      icon="ri-download-line"
+      >
+
+      </VIcon>
+
+      </VBtn>
+    </a>
                   <iframe :src="pdfUrl.data3" width="100%" height="1000" frameborder="0" :title="pdfUrl.title3"></iframe>
                 </v-window-item>
 
@@ -145,6 +189,8 @@ const router = useRouter();
 
 
 const activeTab=ref("class")
+
+const generating=ref(false)
 
 const pdfUrl = ref({
       data1:'',
@@ -244,6 +290,7 @@ const pdfUrl = ref({
 
 
     const generateTimeTable=()=>{
+      generating.value=true;
 
       const apiUrl = window.location.protocol + '//' + window.location.hostname + ':8080';
       const serverUrl = apiUrl + `/api/v1/timetable/regenerate`;
@@ -254,6 +301,7 @@ const pdfUrl = ref({
       })
       .then(response => {
         console.log(response)
+        generating.value=false
         loadPdf1();
 
       })

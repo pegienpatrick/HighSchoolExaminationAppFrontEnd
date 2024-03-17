@@ -1,5 +1,4 @@
 <script setup>
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import logo from '@images/logo.svg?raw'
 import authV1MaskDark from '@images/pages/auth-v1-mask-dark.png'
 import authV1MaskLight from '@images/pages/auth-v1-mask-light.png'
@@ -12,6 +11,7 @@ import { ref } from 'vue'
 
 import Cookies from 'vue-cookies'
 import { useRouter } from 'vue-router'
+
 
 const router = useRouter();
 
@@ -64,8 +64,10 @@ const login = async () => {
     Cookies.set('Authorization', response.data.authorization, '7d');
     // Redirect to home or anothe
 
-    
-    router.push('/');
+    if(response.data.twoFactorEnabled)
+      router.push('/twoFactorVerify')
+    else
+      router.push('/');
     isLoading=false;
   } catch (error) {
 
@@ -84,6 +86,11 @@ const login = async () => {
     
   }
 };
+
+
+const forgotPassword=()=>{
+  router.push("/forgotPassword")
+}
 
 
 
@@ -155,7 +162,8 @@ const login = async () => {
 
                 <a
                   class="ms-2 mb-1"
-                  href="/forgotPassword"
+                  to="/forgotPassword"
+                  @click="forgotPassword"
                 >
                   Forgot Password?
                 </a>
@@ -217,7 +225,7 @@ const login = async () => {
               cols="12"
               class="text-center"
             >
-              <AuthProvider />
+              
             </VCol>
           </VRow>
         </VForm>

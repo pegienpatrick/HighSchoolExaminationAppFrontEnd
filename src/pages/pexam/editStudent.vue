@@ -19,7 +19,7 @@ const accountData = {
   otherName: '',
   dateOfBirth: '',
   birthCertno: '',
-  ifmisNo: '',
+  nemisNo: '',
   gender: '',
   stream: '',
   stage: '',
@@ -386,10 +386,10 @@ axios.get(apiUrl + `/api/v1/student/viewStudent/${admNo}`, {
                 />
               </VCol>
 
-              <!-- 👉 IFMIS Number -->
+              <!-- 👉 nemis Number -->
               <VCol md="6" cols="12">
                 <VTextField
-                  v-model="accountDataLocal.ifmisNo"
+                  v-model="accountDataLocal.nemisNo"
                   label="NEMIS Number"
                 />
               </VCol>

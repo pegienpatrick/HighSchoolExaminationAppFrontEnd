@@ -1,11 +1,8 @@
 <script setup>
-import AccountSettingsAccount from '@/views/pages/account-settings/AccountSettingsAccount.vue';
-import AccountSettingsNotification from '@/views/pages/account-settings/AccountSettingsNotification.vue';
-import AccountSettingsSecurity from '@/views/pages/account-settings/AccountSettingsSecurity.vue';
 import { useRoute } from 'vue-router';
 
-import axios from 'axios'
-import Cookies from 'vue-cookies'
+import axios from 'axios';
+import Cookies from 'vue-cookies';
 
 import { useRouter } from 'vue-router';
 

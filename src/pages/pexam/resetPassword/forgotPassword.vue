@@ -1,5 +1,4 @@
 <script setup>
-import logo from '@images/logo.svg?raw';
 import { useRoute } from 'vue-router';
 
 import axios from 'axios';
@@ -10,6 +9,8 @@ const router = useRouter();
 
 const route = useRoute()
 const activeTab = ref(route.params.tab)
+
+import 'vue3-tel-input/dist/vue3-tel-input.css';
 
 // tabs
 const tabs = [
@@ -114,14 +115,21 @@ const phoneNumberRules= [
 </script>
 
 <template>
+
+
   <VDialog
   v-model="form.success"
   >
+
+ 
    
     <VRow>
+
     <!-- SECTION: Change Password -->
     <VCol cols="12">
+      <div class="auth-wrapper d-flex align-center justify-center pa-4">
       <VCard>
+
         <VCardTitle>
           Reset Password
         </VCardTitle>
@@ -130,21 +138,22 @@ const phoneNumberRules= [
           <p>{{ form.msg }}</p>
         </VCardItem>
           <VCardText>
+            <VForm>
             <!-- 👉 Current Password -->
             <VRow class="mb-3">
               <VCol
-                cols="12"
-                md="6"
+              
+             
               >
                 <!-- 👉 current password -->
-                <VTextField
-                  v-model="passwordResetCode"
-                  :type="ispasswordResetCodeVisible ? 'text' : 'password'"
-                  :append-inner-icon="ispasswordResetCodeVisible ? 'ri-eye-off-line' : 'ri-eye-line'"
-                  autocomplete="on"
+                <!-- <VTextField -->
+                  
+
+                <v-otp-input
+                v-model="passwordResetCode"
+                  
                   label="Password Reset Code"
-                  placeholder=" 0 0 0 0 0 0 "
-                  @click:append-inner="ispasswordResetCodeVisible = !ispasswordResetCodeVisible"
+                  
                 />
               </VCol>
             </VRow>
@@ -152,8 +161,6 @@ const phoneNumberRules= [
             <!-- 👉 New Password -->
             <VRow>
               <VCol
-                cols="12"
-                md="6"
               >
                 <!-- 👉 new password -->
                 <VTextField
@@ -166,10 +173,10 @@ const phoneNumberRules= [
                   @click:append-inner="isNewPasswordVisible = !isNewPasswordVisible"
                 />
               </VCol>
+              </VRow>
+              <VRow>
 
               <VCol
-                cols="12"
-                md="6"
               >
                 <!-- 👉 confirm password -->
                 <VTextField
@@ -185,6 +192,7 @@ const phoneNumberRules= [
           </VCol>
         </VRow>
 
+        </VForm>
 
         </VCardText>
 
@@ -198,6 +206,7 @@ const phoneNumberRules= [
 
         </VForm>
         </VCard>
+        </div>
         </VCol>
         </VRow>
         
@@ -209,7 +218,25 @@ const phoneNumberRules= [
 
 
   <div>
-    <VTabs
+    
+
+    <div class="auth-wrapper d-flex align-center justify-center pa-4">
+    
+    <VCard
+      class="auth-card pa-4 pt-7"
+      max-width="448"
+    >
+
+      <VCardItem class="justify-center">
+        
+
+        <VCardTitle class="font-weight-semibold text-2xl color-red" color="error">
+          Reset Password
+        </VCardTitle>
+      </VCardItem>
+      <VCardItem>
+
+        <VTabs
       v-model="activeTab"
       show-arrows
     >
@@ -227,34 +254,20 @@ const phoneNumberRules= [
       </VTab>
     </VTabs>
 
-    <VWindow
+      </VCardItem>
+      <VWindow
       v-model="activeTab"
       class="mt-5 disable-tab-transition"
       :touch="false"
     >
      
       <VWindowItem value="emailReset">
-        <div class="auth-wrapper d-flex align-center justify-center pa-4">
-    <VCard
-      class="auth-card pa-4 pt-7"
-      max-width="448"
-    >
-      <VCardItem class="justify-center">
-        <template #prepend>
-          <div class="d-flex">
-            <div v-html="logo" />
-          </div>
-        </template>
 
-        <VCardTitle class="font-weight-semibold text-2xl text-uppercase">
-          PExam System
-        </VCardTitle>
-      </VCardItem>
+
+        
 
       <VCardText class="pt-2">
-        <h5 class="text-h5 font-weight-semibold mb-1">
-          Welcome to PExam System! 👋🏻
-        </h5>
+        
         <p class="mb-0">
           Please Enter your Username and phone to send password reset code.
         </p>
@@ -341,44 +354,15 @@ const phoneNumberRules= [
           </VRow>
         </VForm>
       </VCardText>
-    </VCard>
-
-    
-  </div>
-
-
-
-
-
-        
+     
       </VWindowItem>
 
 
 
-     
-      <VWindowItem value="smsReset">
 
-        <div class="auth-wrapper d-flex align-center justify-center pa-4">
-    <VCard
-      class="auth-card pa-4 pt-7"
-      max-width="448"
-    >
-      <VCardItem class="justify-center">
-        <template #prepend>
-          <div class="d-flex">
-            <div v-html="logo" />
-          </div>
-        </template>
-
-        <VCardTitle class="font-weight-semibold text-2xl text-uppercase">
-          PExam System
-        </VCardTitle>
-      </VCardItem>
-
-      <VCardText class="pt-2">
-        <h5 class="text-h5 font-weight-semibold mb-1">
-          Welcome to PExam System! 👋🏻
-        </h5>
+      <VWindowItem  value="smsReset">
+        
+        <VCardText class="pt-2">
         <p class="mb-0">
           Please Enter your Username and email to send password reset code.
         </p>
@@ -406,11 +390,16 @@ const phoneNumberRules= [
                 label="Phone Number"
                 v-model="form.phone"
               />
+              <!-- <vue-tel-input  mode="international"
+              label="Phone"
+              v-model="form.phone"
+              placeholder="phone"
+              ></vue-tel-input> -->
+              </VCol>
 
-              <!-- remember me checkbox -->
-              <div class="d-flex align-center justify-space-between flex-wrap mt-1 mb-4">
-                
-              </div>
+              
+
+              <VCol>
 
               <!-- login button -->
               <VBtn
@@ -466,6 +455,40 @@ const phoneNumberRules= [
           </VRow>
         </VForm>
       </VCardText>
+      </VWindowItem>
+      </VWindow>
+
+
+    </VCard>
+
+    </div>
+    
+  
+ 
+
+
+
+
+      <!-- <VWindowItem value="smsReset">
+
+        <div class="auth-wrapper d-flex align-center justify-center pa-4">
+    <VCard
+      class="auth-card pa-4 pt-7"
+      max-width="448"
+    >
+      <VCardItem class="justify-center">
+        <template #prepend>
+          <div class="d-flex">
+            <div v-html="logo" />
+          </div>
+        </template>
+
+        <VCardTitle class="font-weight-semibold text-2xl text-uppercase">
+          PExam System
+        </VCardTitle>
+      </VCardItem>
+
+      
     </VCard>
 
     
@@ -474,7 +497,7 @@ const phoneNumberRules= [
       </VWindowItem>
 
      
-    </VWindow>
+    </VWindow> -->
   </div>
 </template>
 

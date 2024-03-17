@@ -12,7 +12,7 @@ const accountData = {
   otherName: '',
   dateOfBirth: '',
   birthCertno: '',
-  ifmisNo: '',
+  nemisNo: '',
   gender: '',
   stream: '',
   stage: '',
@@ -240,17 +240,17 @@ const submitForm = async () => {
               </VCol>
 
               <!-- 👉 Date of Birth -->
-<VCol md="6" cols="12">
-  <VTextField
-    v-model="form.dateOfBirth"
-    label="Date of Birth"
-    type="date"
-    placeholder="YYYY-MM-DD"
-  />
-</VCol>
+              <VCol md="6" cols="12">
+                <VTextField
+                  v-model="form.dateOfBirth"
+                  label="Date of Birth"
+                  type="date"
+                  placeholder="YYYY-MM-DD"
+                />
+              </VCol>
 
-<!-- 👉 Gender -->
-<VCol md="6" cols="12">
+              <!-- 👉 Gender -->
+              <VCol md="6" cols="12">
                 <VSelect
                   v-model="accountDataLocal.gender"
                   label="Gender"
@@ -268,10 +268,10 @@ const submitForm = async () => {
                 />
               </VCol>
 
-              <!-- 👉 IFMIS Number -->
+              <!-- 👉 nemis Number -->
               <VCol md="6" cols="12">
                 <VTextField
-                  v-model="accountDataLocal.ifmisNo"
+                  v-model="accountDataLocal.nemisNo"
                   label="NEMIS Number"
                 />
               </VCol>

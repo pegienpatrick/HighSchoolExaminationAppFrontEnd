@@ -41,7 +41,7 @@ axios.get(apiUrl+'/api/v1/student/allStudents',{
     // students.value.headers.remove("num")
     // students.value.headers.remove("reserved")
     // students.value.headers.remove("guardians")
-    const headersToRemove = ["num", "reserved", "guardians"];
+    const headersToRemove = ["num", "reserved", "guardians","name","birthcertno"];
     students.value.headers = Object.keys(studentsData[0]).filter(header => !headersToRemove.includes(header));
     // // console.log(students.value.headers)
     // for(var i=0;i<studentsData.length;i++)
@@ -162,7 +162,7 @@ const selectedStream=ref({
       </template> -->
       <template v-slot:item="{ item }" >
         <!-- Add a button to each row for viewing the student -->
-        <tr v-if="(selectedStream.stage=='All'||selectedStream.stage==item.stage)&&(selectedStream.stream=='All'||selectedStream.stream==item.stream)">
+        <tr @dblclick="viewStudent(item)" v-if="(selectedStream.stage=='All'||selectedStream.stage==item.stage)&&(selectedStream.stream=='All'||selectedStream.stream==item.stream)">
           <td v-for="h in students.headers" :key="h.value">
             {{ item[h] }}
             <!-- {{ value }} -->
@@ -187,5 +187,6 @@ const selectedStream=ref({
 
 .custom-table tbody tr:nth-child(odd) {
   background-color: #f5f5f5; /* Set the background color for odd rows */
+  color: #0b1044;
 }
 </style>

@@ -75,7 +75,8 @@ v-model="selection.grade"
               </VSelect> -->
               <!-- {{ console.log(teachers.allTeachers[selections.data.classTeacher.teacher]) }} -->
               <v-text-field
-                v-model="teachers.allTeachers[selections.data.classTeacher.teacher]"
+                v-model="selections.data.classTeacher.teacher"
+                :value="teachers.allTeachers[selections.data.classTeacher.teacher]"
                 label="Class Teacher"
                 outlined
                 dense
@@ -135,7 +136,8 @@ v-model="selection.grade"
 
 
           <v-text-field
-                v-model="teachers.allTeachers[subjectTeacher.teacher==null?subjectTeacher.subjectCode:subjectTeacher.teacher]"
+                v-model="subjectTeacher.teacher"
+                :value="teachers.allTeachers[subjectTeacher.teacher]"
                 :label="subject+' Teacher'"
                 outlined
                 dense
@@ -266,9 +268,11 @@ const selection=ref({
         
     const teachers=ref({
       data:[],
-      allTeachers:null,
+      allTeachers:[],
       filtered:[]
     })
+
+    const loadTeachers=()=>{
 
         axios.get(apiUrl + `/api/v1/subjectTeacher/allTeachers`, {
             headers: {
@@ -278,10 +282,13 @@ const selection=ref({
           .then((response) => {
               console.log(response)
               teachers.value.allTeachers=response.data;
+              teachers.value.data=[]
               for(const i in teachers.value.allTeachers)
                 teachers.value.data.push({key:i,value:i,title:teachers.value.allTeachers[i],text:teachers.value.allTeachers[i]});
 
             });
+    
+        }
 
 
 
@@ -296,6 +303,11 @@ const selection=ref({
                   .then((response) => {
                     console.log(response)
                     selections.value.data=response.data;
+                    // var tmp=teachers.value.allTeachers;
+                    // teachers.value.allTeachers=null;
+                    // teachers.value.allTeachers=tmp;
+                    loadTeachers();
+
                     
                     
                   });
@@ -304,6 +316,7 @@ const selection=ref({
 
 
             const updateSubjectTeacher=(conf)=>{
+              console.log(conf)
               axios.put(apiUrl+`/api/v1/subjectTeacher/updateSubjectTeacher`,conf,{
                 headers: {
                       Authorization: Cookies.get("Authorization")
