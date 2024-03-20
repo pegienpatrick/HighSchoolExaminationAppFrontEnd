@@ -349,6 +349,29 @@ import Swal from 'sweetalert2';
 
   const deleteSlot=(item)=>{
 
+    Swal.fire({
+        title: 'Delete Break',
+        text: 'Are you sure you want to delete this Break?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+
+        if(result.isConfirmed)
+        {
+          axios.delete(apiUrl +`/api/v1/slots/delete/${item.num}`, {
+                  headers: {
+                      Authorization: Cookies.get("Authorization")
+                  },
+              }).then((response) => {
+                      console.log(response);
+                      loadSlots();
+              })
+        }
+      });
+
   }
 
 

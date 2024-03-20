@@ -207,6 +207,8 @@
                   :bg-color="item.marks[c.value].subjectTeacher==activeUser.num?'white':'#EF9A9A'"
                   :label="subjectMap.get(item.marks[c.value].subjectCode).subjectRep+'('+item.admNo+')'"
                   @change="updateMarks(item.marks[c.value])"
+                  type="number"
+                  step=".001"
               
                 />
               </td>
