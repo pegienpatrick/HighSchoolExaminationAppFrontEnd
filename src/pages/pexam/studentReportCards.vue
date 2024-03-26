@@ -32,6 +32,7 @@
     <a class="btn btn-primary" color="success" :download="pdfUrl.title" :href="pdfUrl.data">
       <VBtn
       text="Download"
+      :loading="pdfUrl.progres>0&&pdfUrl.progres<100"
       >
      Download _
      
@@ -55,6 +56,14 @@
 <VRow>
   <VCol>
     <VCard>
+      <VCardItem>
+        <!-- Progress bar to show loading progress -->
+    <div v-if="pdfUrl.progres>0&&pdfUrl.progres<100" class="progress">
+      <div class="progress-bar" role="progressbar" :style="{ width: progres + '%' }">
+        {{ pdfUrl.progres }}%
+      </div>
+    </div>
+      </VCardItem>
       <!-- <embed :src="pdfUrl" type="application/pdf" width="100%" height="600px" /> -->
       <!-- <iframe :src="pdfUrl" width="100%" height="600px" frameborder="0"></iframe> -->
       <VCardText>
@@ -101,7 +110,8 @@ export default {
     const examinationId = ref('');
     const pdfUrl = ref({
       data:'',
-      title:''
+      title:'',
+      progres:1
     });
     const stage=ref({
       data:'',
@@ -126,6 +136,12 @@ export default {
         responseType: 'blob',
         headers: {
           Authorization: Cookies.get('Authorization'),
+        },
+        onDownloadProgress: (progressEvent) => {
+          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          console.log(`Download progress: ${progress}%`);
+          // Update your UI with the progress value if needed
+          pdfUrl.value.progres=progress;
         },
       })
       .then(response => {
